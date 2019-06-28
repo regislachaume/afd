@@ -1,7 +1,10 @@
 \documentclass[twocolumn]{article}
+
+\usepackage{natbib}
 \usepackage{amsmath}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{url}
 % \usepackage{subequations}
 
 \def\npup{\ensuremath{U}}
@@ -78,7 +81,7 @@ the mean.  Figure~\ref{fig:transform} displays the exponential nature of the rat
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{total-afd-timeseries.pdf}
+\includegraphics[width=\linewidth]{pdf/total-afd-timeseries.pdf}
 \caption{Evolution of total direct State funding to Chilean Universities, in 2018
 pesos (inflation-corrected).}
 \label{fig:total-afd}
@@ -121,7 +124,7 @@ share of the total funding.  So,
 \subsection{Checks}
 \begin{figure}
 \centering
-\includegraphics[width=.85\linewidth]{transform.pdf}
+\includegraphics[width=.85\linewidth]{pdf/transform.pdf}
 \caption{Transformation of the metric $x_{i,n,k}$ into $y_{i,n,k}$, before a weighted sum 
 $\sum_k c_{i,n,k} y_{i,n,k}$ is performed to determine the rating of university $i$ in year $n$.}
 \label{fig:transform}
@@ -134,8 +137,8 @@ rounding errors (8 digits) with those of the Ministry. The subsidies I predict
 for each university differ by at most CLP 1,000 (USD 1.50) with the
 official ones due to rounding errors, as the accounting unit used in the
 official documents is 1,000 Chilean pesos. In 2010, the Ministry used the 2009
-calculation with 2008 metrics, instead of 2009 ones. In 2006, there is an
-unexplained 0.01\% discrepancy between my determination and the Ministry's. 
+calculation with 2008 metrics, instead of 2009 ones, leading to large differences. In 2006, there is an unexplained 0.01\% discrepancy between my determination and the Ministry's.  The official file from the ministry with added columns showing my calculations are available from github project \url{https://github.com/loqueelvientoajuarez/afd}.\footnote{The original ministry file can
+be obtained from \url{http://dfi.mineduc.cl/usuarios/MECESUP/File/2018/instrumentos/AFD/AFD_2006_al_2018_MontosVariables5xc(1).xlsx} and my calculations from \url{https://github.com/loqueelvientoajuarez/afd/blob/master/src/tabla-afd.xlsx}}. 
 
 The detail of calculations for year 2018 is given in Appendix.~\ref{sec:2018}.
 For that year, my calculations match exactly the Ministery's to the peso.
@@ -204,11 +207,11 @@ in Eqs.~(\ref{eq:x1}--\ref{eq:afd}) are done with the metrics provided by the
 Ministry (see Sect.~\ref{sec:metrics}) and for the same ones with an additional
 publication.  The difference in funding is $\Delta F_{i,n+1}$. 
 
-Table~\ref{tab:papercost} gives the 2018 funding a University would have received,
-had an additional 2017 paper been published.  I have made the hypothesis, that
-no other Traditional University has co-authored the paper, in which case the
+Table~\ref{tab:papercost} gives the 2018 funding a University would have received, had an additional 2017 paper been published.  I have made the hypothesis, that no other Traditional University has co-authored the paper, in which case the
 amount may vary. 
 
+My figures are much larger than those derived by \citet{RAM12}.  The reasons are that (a) only consider the first five years after the paper is published while the half-life of the 95\% dampening is 14 years, meaning that they underestimate the total revenue obtained with a paper by a factor of $\approx 4$; (b) include an additional dampening of 8\% per year that they do not justify and is not based on any kind of calculation by the Ministry, meaning that they underestimate the additional funding by a factor of $\approx 2.5$ to 4;\footnote{Quite the contrary, the constant increase of the total funding (consumer price index +2\%) calls for an amplification of 2\%}; (c) use 2010 data, meaning that the monetary incentive is larger than the 2018 one by a factor of $\approx 2$; and (d) seem to use different values for the coefficients than those retroactively published in 201. Their Fig.~4 doesn't match the corrected coefficients we derive for 2009, 2010, or 2011. Actually, both our data and Ministry's figures for years 2006 to 2017 show a systematic discrepancy between U. de Chile and P. U. Católica de Chile of the order of 25-35\%  in weighted sum of corrected coefficients and share of the 5\%, while their Figure gives about 10\%.
+ 
 \appendix
 \section{Direct state funding in 2018}
 \label{sec:2018}
@@ -301,5 +304,14 @@ U. de Aysén                &   0 & 0.001 &  0.0 & 0.000 & 0.735 & 0.130 & 0.065
 \hline
 \end{tabular}
 \end{table*}
+
+\begin{figure*}
+\includegraphics[width=\linewidth]{pdf/afd-coefficients-2018.jpg}
+\caption{Graphical representation of the contributions of each AFD coefficient ($c_k y_k$) to each University's score.}
+\end{figure*}
+
+\section*{Bibliography}
+\bibliographystyle{plainnat}
+\bibliography{afd}
 
 \end{document}
