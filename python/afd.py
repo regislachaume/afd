@@ -59,7 +59,7 @@ class AFD:
             
 
 def read_table(year, compute=True, fill_missing=False):
-    book = load_workbook('../src/tabla-ministerio.xlsx')
+    book = load_workbook('../src/tabla-afd.xlsx')
     sheet = book[book.sheetnames[0]]
     if year >= 2018:
         nuniv = 27
@@ -204,24 +204,24 @@ def cumulated_marginal_earnings(y, F95, F, dF, start=2013, duration=3, p=0,
     ic = icorr[:,None,None]
     return y[keep], F95[keep] / icorr, F[keep] / icorr, dF_cum[keep] / ic
 
-# univ = [0, 1, 2, 5, 4, 8]
-univ = np.arange(25)
-metric = ['Sp', 'G', 'P']
-nx = 2
-ny = 3
-y, F95, F, dF = historical_marginal_earnings(metric=metric, 
-    univ=univ, unit=None)
-# dF = np.maximum(dF, 1) # one weird case with dF < 1
+#   # univ = [0, 1, 2, 5, 4, 8]
+#   univ = np.arange(25)
+#   metric = ['Sp', 'G', 'P']
+#   nx = 2
+#   ny = 3
+#   y, F95, F, dF = historical_marginal_earnings(metric=metric, 
+#       univ=univ, unit=None)
+#   # dF = np.maximum(dF, 1) # one weird case with dF < 1
 
- 
-university = read_table(2019)[univ]['University']
-# university = [re.sub(' ?(Católica|C\.)', 'C.', u) for u in university]
-university = [re.sub('\.(?=\S)', '. ', u) for u in university]
-university = [re.sub('Téc\.', 'Técnica', u) for u in university]
-university = [re.sub('Sta\.', 'Santa', u) for u in university]
-what = ['prof', 'grant', 'paper'] 
-uf = Table.read('../src/uf.tsv', format='ascii.csv', delimiter='\t')
-icorr = uf['UF'][-1] / uf['UF'] 
+#    
+#   university = read_table(2019)[univ]['University']
+#   # university = [re.sub(' ?(Católica|C\.)', 'C.', u) for u in university]
+#   university = [re.sub('\.(?=\S)', '. ', u) for u in university]
+#   university = [re.sub('Téc\.', 'Técnica', u) for u in university]
+#   university = [re.sub('Sta\.', 'Santa', u) for u in university]
+#   what = ['prof', 'grant', 'paper'] 
+#   uf = Table.read('../src/uf.tsv', format='ascii.csv', delimiter='\t')
+#   icorr = uf['UF'][-1] / uf['UF'] 
 
 def extrapolate_earnings(yin, dF, yout, icorr=1):
     ny, nm, nu = dF.shape
@@ -240,78 +240,77 @@ def extrapolate_earnings(yin, dF, yout, icorr=1):
     zout[large_future] = ((1 - f) * znow[large_future] + f * zout[large_future])
     return np.exp(zout)
 
-y0 = np.arange(y[0], y[0] + 30)
-dF_ex = extrapolate_earnings(y, dF, y0, icorr=icorr)
-
-# keep universities in the first half of prof #
-for m, me in enumerate(metric):
-    fig = pl.figure(m + 1, figsize=(7.5,10))
-    fig.clf()
-    fig.subplots_adjust(wspace=0, left=0.1, bottom=0.04,
-        hspace=0, top=.99, right=.99)
-    for j in range(ny):
-        for i in range(nx):
-            k = i + nx * j  
-            ax = fig.add_subplot(ny, nx, k + 1)
-            if j < ny - 1:
-                ax.set_xticklabels([])
-            else:
-                ax.set_xlabel('year')
-            if i > 0:
-                ax.set_yticklabels([])
-            else:
-                ax.set_ylabel('MCLP/{}'.format(what[m]))
-            keep = y != 2010
-            ax.plot(y[keep], dF[keep,m,k] * icorr[keep] / 1e3, 'ko', 
-                    y0, dF_ex[:,m,k] / 1e3, 'k:')
-    ymax = 1.1 * np.max([ax.get_ylim()[1] for ax in fig.axes])
-    for ax, u in zip(fig.axes, university):
-        ax.set_ylim(0, ymax)
-        ax.text(2006, 0.95 * ymax, u, va='top')
-    fig.show()
-    fig.savefig('marginal-earnings-by-{}.pdf'.format(what[m]))
+# y0 = np.arange(y[0], y[0] + 30)
+# dF_ex = extrapolate_earnings(y, dF, y0, icorr=icorr)
+#
+#   # keep universities in the first half of prof #
+#   for m, me in enumerate(metric):
+#       fig = pl.figure(m + 1, figsize=(7.5,10))
+#       fig.clf()
+#       fig.subplots_adjust(wspace=0, left=0.1, bottom=0.04,
+#           hspace=0, top=.99, right=.99)
+#       for j in range(ny):
+#           for i in range(nx):
+#               k = i + nx * j  
+#               ax = fig.add_subplot(ny, nx, k + 1)
+#               if j < ny - 1:
+#                   ax.set_xticklabels([])
+#               else:
+#                   ax.set_xlabel('year')
+#               if i > 0:
+#                   ax.set_yticklabels([])
+#               else:
+#                   ax.set_ylabel('MCLP/{}'.format(what[m]))
+#               keep = y != 2010
+#               ax.plot(y[keep], dF[keep,m,k] * icorr[keep] / 1e3, 'ko', 
+#                       y0, dF_ex[:,m,k] / 1e3, 'k:')
+#       ymax = 1.1 * np.max([ax.get_ylim()[1] for ax in fig.axes])
+#       for ax, u in zip(fig.axes, university):
+#           ax.set_ylim(0, ymax)
+#           ax.text(2006, 0.95 * ymax, u, va='top')
+#       fig.show()
+#       fig.savefig('marginal-earnings-by-{}.pdf'.format(what[m]))
    
 
 # keep universities in the first half of prof #
 
-p = 0
-y_cum, F95_cum, F_cum, dF_cum = cumulated_marginal_earnings(y, F95, F, dF, 
-    start=[2006, 2016, 2018], duration=[30, 3, 1], p=p, icorr=icorr)
-for m, me in enumerate(metric):
-    fig = pl.figure(m + 11, figsize=(7.5,10))
-    fig.clf()
-    fig.subplots_adjust(wspace=0, left=0.1, bottom=0.04,
-        hspace=0, top=.99, right=.99)
-    for j in range(ny):
-        for i in range(nx):
-            k = i + nx * j
-            ax = fig.add_subplot(ny, nx, k + 1)
-            if j < ny - 1:
-                ax.set_xticklabels([])
-            else:
-                ax.set_xlabel('year')
-            if i > 0:
-                ax.set_yticklabels([])
-            else:
-                ax.set_ylabel('MCLP/{}'.format(what[m]))
-            keep = y != 2010
-            ax.plot(y_cum, dF_cum[:,m,k] / 1e3, 'k-'),
-    ymax = 1.1 * np.max([ax.get_ylim()[1] for ax in fig.axes])
-    for k, (ax, u) in enumerate(zip(fig.axes, university)):
-        ax.set_ylim(0, ymax)
-        ax.text(2006, 0.95 * ymax, u, va='top')
-        f = 0.95 * (1 + p)
-        df_tot = (dF_cum[:,m,k].sum() + f/(1-f)*dF_cum[-1,m,k]) / 1e3
-        if me == 'P':
-            txt = 'average = {:.0f}M'.format(df_tot)
-        else:
-            df = df_tot / duration[m] / 12 
-            txt = 'average = {:.1f}M/mo'.format(df)
-        ax.text(y_cum[-2], 0.8 * ymax, txt, ha='right')
-    fig.show()
-    fig.savefig('cumulated-earnings-by-{}.pdf'.format(what[m]))
+# p = 0
+# y_cum, F95_cum, F_cum, dF_cum = cumulated_marginal_earnings(y, F95, F, dF, 
+#     start=[2006, 2016, 2018], duration=[30, 3, 1], p=p, icorr=icorr)
+#   for m, me in enumerate(metric):
+#       fig = pl.figure(m + 11, figsize=(7.5,10))
+#       fig.clf()
+#       fig.subplots_adjust(wspace=0, left=0.1, bottom=0.04,
+#           hspace=0, top=.99, right=.99)
+#       for j in range(ny):
+#           for i in range(nx):
+#               k = i + nx * j
+#               ax = fig.add_subplot(ny, nx, k + 1)
+#               if j < ny - 1:
+#                   ax.set_xticklabels([])
+#               else:
+#                   ax.set_xlabel('year')
+#               if i > 0:
+#                   ax.set_yticklabels([])
+#               else:
+#                   ax.set_ylabel('MCLP/{}'.format(what[m]))
+#               keep = y != 2010
+#               ax.plot(y_cum, dF_cum[:,m,k] / 1e3, 'k-'),
+#       ymax = 1.1 * np.max([ax.get_ylim()[1] for ax in fig.axes])
+#       for k, (ax, u) in enumerate(zip(fig.axes, university)):
+#           ax.set_ylim(0, ymax)
+#           ax.text(2006, 0.95 * ymax, u, va='top')
+#           f = 0.95 * (1 + p)
+#           df_tot = (dF_cum[:,m,k].sum() + f/(1-f)*dF_cum[-1,m,k]) / 1e3
+#           if me == 'P':
+#               txt = 'average = {:.0f}M'.format(df_tot)
+#           else:
+#               df = df_tot / duration[m] / 12 
+#               txt = 'average = {:.1f}M/mo'.format(df)
+#           ax.text(y_cum[-2], 0.8 * ymax, txt, ha='right')
+#       fig.show()
+#       fig.savefig('cumulated-earnings-by-{}.pdf'.format(what[m]))
 
- 
 
 def cumulated(univ=[[0, 1],[2,3]], start=2006, metric='Sp', ny=30, p=1.00, 
         name=None):
@@ -379,20 +378,19 @@ def cumulated(univ=[[0, 1],[2,3]], start=2006, metric='Sp', ny=30, p=1.00,
 #cumulated(metric='Sp',start=2006,univ=[[0, 1],[2, 3]],ny=30, name='staff.pdf')
 #cumulated(metric='G',start=2016,univ=[[0,1],[2,3]],ny=3, name='postdoc.pdf')
 
-
-
-def science_incentives(year=2019, p=1.00):   
+def science_incentives(year=2019, p=1.02):   
     tab = read_table(year)
-    print('\\begin{tabular}{l rr rr}')
-    print('\\hline\\hline')
-    print('{:30} & {:26} & {:26} & {:26} \\\\'.format('universidad', 
+    out = open('marginals-year={}-growth={:.1%}.tex'.format(year, p-1), 'w')
+    out.write('\\begin{tabular}{l rr rr}\n')
+    out.write('\\hline\\hline\n')
+    out.write('{:30} & {:26} & {:26} & {:26} \\\\\n'.format('universidad', 
         '\multicolumn{2}{c}{postgraduate staff}', 
         '\multicolumn{2}{c}{research grant}', 
         '\multicolumn{2}{c}{WoS publication}'))
-    print(('{:30}' + ' & {:11} & {:13}' * 3 + ' \\\\').format('',
+    out.write(('{:30}' + ' & {:11} & {:13}' * 3 + ' \\\\\n').format('',
             *(['2019', 'all years'] * 3)))
-    print(('{:30}' + ' & {:11} & {:13}' * 3 + ' \\\\').format('', *(['[CLP]'] * 6)))
-    print('\\hline')
+    out.write(('{:30}' + ' & {:11} & {:13}' * 3 + ' \\\\\n').format('', *(['[CLP]'] * 6)))
+    out.write('\\hline')
     for k in range(len(tab)):
         #tab1 = change_metric(tab, k, 'U', increment=1) 
         #df21 = tab1[k]['f'] - tab[k]['f']
@@ -410,12 +408,12 @@ def science_incentives(year=2019, p=1.00):
         df51 = tab1[k]['f'] - tab[k]['f']
         #tab1 = change_metric(tab, k, 'P', increment=0.1, unit='stdev')
         #df52 = (tab1[k]['f'] - tab[k]['f']) / tab[k]['f']
-        #print('{:30} {:5.0f} {:7.2%} {:5.0f} {:7.2%} {:5.0f} {:7.2%} {:5.0f} {:7.2%}'.format(tab[k]['University'], df21, df22, df31, df32, df41, df42, df51, df52))
+        #out.write('{:30} {:5.0f} {:7.2%} {:5.0f} {:7.2%} {:5.0f} {:7.2%} {:5.0f} {:7.2%}'.format(tab[k]['University'], df21, df22, df31, df32, df41, df42, df51, df52))
         u = tab[k]['University']
         f = 1 / (1 - 0.95 * p)
-        print(('{:30}' + ' & {:11,.0f} & {:13,.0f}' * 3 +  ' \\\\').format(u, 
+        out.write(('{:30}' + ' & {:11,.0f} & {:13,.0f}' * 3 +  ' \\\\\n').format(u, 
             1e3*df31, 1e3*df31*f, 1e3*df41, 1e3*df41*f, 1e3*df51, 1e3*df51*f))
-    print('\\hline')
-    print('\\end{tabular}')
+    out.write('\\hline\n')
+    out.write('\\end{tabular}\n')
 
-# science_incentives()
+science_incentives()
