@@ -148,7 +148,7 @@ where $\delta_{ij} = 1$ if universities $i$ and $j$ are the same and zero otherw
 The meaning of \eqref{modif} is the following:
 \begin{enumerate}
     \item \emph{$(\xi_{j,k}/4 - 7/5)^2$ factor}:  The relative improvement depends on the relative standing of the University in the ranking.  A university lagging behind by 2 standards deviations gets a relative improvement 4,5 times higher than a university standing out by 2 standard deviations.
-    \item \emph{$\delta_{ij}$ term:} University $i$ generally benefits from an increase of its own ratio $\Delta x_{i,k}$: the $\delta_{ij}$ (= 1 for $i = j$) term in the equation is the only one that is not in $1/N$. However, if $|\xi_{i,k}| > \sqrt{N - 1} \approx 5$ standard deviations, University could lose from improving.  Nevertheless, the data of the Ministery from 2006 to 2018 can be used to show that the highest deviation any of the ratio has ever reached is 3.7.
+    \item \emph{$\delta_{ij}$ term:} University $i$ generally benefits from an increase of its own ratio $\Delta x_{i,k}$: the $\delta_{ij}$ (= 1 for $i = j$) term in the equation is the only one that is not in $1/N$. However, if $|\xi_{i,k}| > \sqrt{N - 1} \approx 5$ standard deviations, University could lose from improving.  Nevertheless, the data of the Ministery from 2006 to 2020 can be used to show that the highest deviation any of the ratio has ever reached is 3.7.
     \item University $j$ may benefit from, or be harmed by, the improvement of University $i$.  There are two effects at play.  
     \begin{enumerate}
     \item \emph{$1/N$ term}: The increase of the mean, would on its own hurt all other universities as their position relative to the mean $\xi_{j,k}$ would drop (see the $1/N$ term in the equation).  
@@ -201,20 +201,20 @@ $\sum_k c_{i,n,k} y_{i,n,k}$ is performed to determine the rating of university 
 \end{figure}
 
 \paragraph{Yearly evaluation} I have checked the calculations of the 5\% using open data from the Eduction Ministry for
-years 2006 to 2018. For each year since 2011 and 2007--2009, the percentages I
+years 2006 to 2020. For each year since 2011 and 2007--2009, the percentages I
 derived (see Table~\ref{tab:calcdetail} for 2018) match within numerical
 rounding errors (8 digits) with those of the Ministry. The subsidies I predict
 for each university differ by at most CLP 1,000 (USD 1.50) with the
 official ones due to rounding errors, as the accounting unit used in the
 official documents is 1,000 Chilean pesos. In 2010, the Ministry used the 2009
-calculation with 2008 metrics, instead of 2009 ones, leading to large differences if the 2009 metrics given in the Ministry's spreadsheet is used.  Difference are zero within rounding errors using 2008 data instead. In 2006, there is an unexplained 0.01\% discrepancy between my determination and the Ministry's.  The official file from the ministry with added columns showing my calculations are available from github project \url{https://github.com/loqueelvientoajuarez/afd}.\footnote{The original ministry file can
+calculation with 2008 metrics, instead of 2009 ones, leading to large differences if the 2009 metrics given in the Ministry's spreadsheet is used.  Difference are zero within rounding errors using 2008 data instead. In 2006, there is an unexplained 0.01\% discrepancy between my determination and the Ministry's.  The official spreadsheet file from the ministry, with additional sheets showing my calculations, are available from github project \url{https://github.com/loqueelvientoajuarez/afd}.\footnote{The original ministry file can
 be obtained from \url{http://dfi.mineduc.cl/usuarios/MECESUP/File/2018/instrumentos/AFD/AFD_2006_al_2018_MontosVariables5xc(1).xlsx} and my calculations from \url{https://github.com/loqueelvientoajuarez/afd/blob/master/src/tabla-afd.xlsx}}. 
 The detail of calculations for year 2018 is given in Appendix.~\ref{sec:2018}.
 For that year, my calculations match exactly the Ministery's to the peso.
 
-\paragraph{Time-evolution} I have checked the recurrence formula \eqref{afd} using the total amount given for each year $F_n$.  The 95\% funding is well predicted from year to year, except again for 2010, where I had to substitude 2008 funding percentages to the expected 2009 ones. Because of rounding errors cumulating from year to year, the amounts I predict for 2018 differ by up to 7,000 pesos (approx USD 10) with those of the Ministry.
+\paragraph{Time-evolution} I have checked the recurrence formula \eqref{afd} using the total amount given for each year $F_n$.  The 95\% funding is well predicted from year to year, except again for 2010, where I had to substitude 2008 funding percentages to the expected 2009 ones. Because of rounding errors cumulating from year to year, the amounts I predict differ by up to 4,000 pesos (approx USD 10) with those of the Ministry.
 
-\paragraph{Marginal earnings}  Marginal earnings have been determined by two methods.  The first one, using differential calculus in Sect.~\ref{sec:marginal}, and the second one, by doing the full calculation with \eqref{afd} using the new values of the coefficients.  We have checked that both method agree within a few significant digits as long as the variations remain small.
+\paragraph{Marginal earnings}  Marginal earnings have been determined by two methods.  The first one, using differential calculus in Sect.~\ref{sec:marginal}, and the second one, by doing the full calculation with \eqref{afd} using the new values of the coefficients.  I have checked that both method agree within a few significant digits as long as the variations remain small.
 
 \section{Value of an additional paper, project, or staff}
 \begin{table*}[t]
@@ -260,8 +260,7 @@ U. de Aysén                    &  81\,972\,000 & 2\,644\,258\,065 &  64\,904\,0
 
 
 
-If an additional paper is published by a researcher of University $i$ in year $n$, it will reflect in 
-the 5\% funding of year $n + 1$. Let us call $\Delta F_{i,n+1}$ the additional earnings 
+If an additional paper is published by a researcher of University $i$ in year $n$, it will reflect in the 5\% funding of year $n + 1$. Let us call $\Delta F_{i,n+1}$ the additional earnings 
 of the university in that year.  In the subsequent years, it will reflect via the 95\% 
 (first term of the right handside of \eqref{afd}) in this way:
 \begin{align}
