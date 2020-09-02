@@ -6,6 +6,7 @@ import numpy as np
 import scipy as sp
 import scipy.stats
 from matplotlib import pylab as pl
+import matplotlib as mpl
 import re
 import sys
 
@@ -144,20 +145,22 @@ def compute_table(tab, skip=None):
 
 def change_metric(tab, univ, name, increment=1, unit='number'):
     tab = tab.copy()
-    if unit == 'stdev':
-        s = tab[univ]['S']
-        if name == 'P':
-            tab[univ]['P'] += tab['x5'].std(ddof=0) * increment * s 
-        elif name == 'G':
-            tab[univ]['G'] += tab['x4'].std(ddof=0) * increment * s
-        elif name == 'Sp':
-            tab[univ]['Sp'] += tab['x3'].std(ddof=0) * increment * s
-        elif name == 'U':
-            tab[univ]['U'] += tab['x2'].std(ddof=0) * increment * s
+    univ = np.atleast_1d(univ)
+    for univ in univ:
+        if unit == 'stdev':
+            s = tab[univ]['S']
+            if name == 'P':
+                tab[univ]['P'] += tab['x5'].std(ddof=0) * increment * s 
+            elif name == 'G':
+                tab[univ]['G'] += tab['x4'].std(ddof=0) * increment * s
+            elif name == 'Sp':
+                tab[univ]['Sp'] += tab['x3'].std(ddof=0) * increment * s
+            elif name == 'U':
+                tab[univ]['U'] += tab['x2'].std(ddof=0) * increment * s
+            else:
+                raise NotImplementedError('not doable actually')
         else:
-            raise NotImplementedError('not doable actually')
-    else:
-        tab[univ][name] += increment
+            tab[univ][name] += increment
     # recompute table
     compute_table(tab)
     return tab
@@ -399,7 +402,7 @@ def cumulated(univ=[[0, 1],[2,3]], start=2006, metric='Sp', ny=30, p=1.00,
 #cumulated(metric='G',start=2016,univ=[[0,1],[2,3]],ny=3, name='postdoc.pdf')
 
 def variation(tabs):
-    years = [tab.meta['year'] for tab in tabs]
+    years = np.array([tab.meta['year'] for tab in tabs])
     names = tabs[0].colnames[1:]
     rows = [(str(tab.meta['year']),) + tuple(float(sum(tab[name])) for name in names) 
                 for tab in tabs]
@@ -429,31 +432,60 @@ def variation(tabs):
     fig = pl.figure(1)
     fig.clf()
     ax = fig.add_subplot(111)
-    line1 = ax.plot(years, tab['AFD_real'][:-1], 'k-', 
-            label=f"AFD ({tab['AFD_real'][-1]:+.1%})")
-    ax.set_ylabel('AFD [2020 Chilean pesos]')
-    ax.set_ylim(0, ax.get_ylim()[1])
     ax2 = ax.twinx()
-    line2 = ax2.plot(years, tab['GDP_percapita'][:-1], 'k--',
+    grey = (.4,.4,.7)
+    line2 = ax2.plot(years, tab['GDP_percapita'][:-1],
+            color=grey, linestyle='-.',
             label=f"GDP per cápita ({mean_growth:+.1%})")
-    line3 = ax2.plot(years, tab['IR_real'][:-1], 'k-.',
-            label=f"Mean real wage ({mean_ir_growth:+.1%})")
-    line4 = ax2.plot(years, tab['U'][:-1] / tab['U'][-2], 
-            color=(.5, .5, .5), linestyle='--',
+    line3 = ax2.plot(years, tab['IR_real'][:-1], 
+            color=grey, linestyle=':',
+            label=f"mean real wage ({mean_ir_growth:+.1%})")
+    line4 = ax2.plot(years-1, tab['U'][:-1] / tab['U'][-2], 
+            color=grey, linestyle='--',
             label=f"undergraduates ({tab['U'][-1]:+.1%})")
-    line5 = ax2.plot(years, tab['S'][:-1] / tab['S'][-2], 
-            color=(.5, .5, .5), linestyle='-',
+    line5 = ax2.plot(years-1, tab['S'][:-1] / tab['S'][-2], 
+            color=grey, dashes=[5,2,2,2,2,2],
             label=f"professors ({tab['S'][-1]:+.1%})")
     ax2.set_ylim(0, ax2.get_ylim()[1])
     ax2.set_ylabel('relative value')
+    ax2.spines['right'].set_color(grey) 
+    ax2.tick_params(axis='y', color=grey)
+    ax2.yaxis.label.set_color(grey)
+    for label in ax2.get_yticklabels():
+        label.set_color(grey)
+    line1 = ax.plot(years, tab['AFD_real'][:-1] / 1e6, 'k-', 
+            label=f"AFD ({tab['AFD_real'][-1]:+.1%})")
+    ax.set_ylabel('billions 2020 Chilean pesos [10⁹ CLP]')
+    ax.set_ylim(0, ax.get_ylim()[1])
+    
     lines = line1 + line2 + line3 + line4 + line5
     labels = [l.get_label() for l in lines]
     ax.legend(lines, labels)
+    fig.tight_layout()
     fig.show()
     fig.savefig('../pdf/total-afd-timeseries.pdf')
     return tab
 
-def science_incentives(tab, p=1.02, include_caption=False):   
+def collaboration(tab1, metric='P'):
+    nuniv = len(tab1)
+    M = np.zeros((nuniv, nuniv))
+    if not tab1.meta['computed']:
+        compute_table(tab1)
+    for i in range(nuniv):
+        u1 = tab1[i]['University']
+        tab2 = change_metric(tab1, i, metric)
+        df_i = (tab2[i]['f'] - tab1[i]['f'])
+        print(f"--- {u1} ({df_i:13.0f}) ---")
+        for j in range(nuniv):
+            if i == j:
+                continue
+            u2 = tab1[j]['University']
+            tab2 = change_metric(tab1, [i, j], metric)
+            df_ij = (tab2[i]['f'] - tab1[i]['f']) 
+            print(f"{df_ij - df_i:13.0f} {df_ij:13.0f} {u2:30}")
+    return M
+
+def science_incentives(tab, p=0.02, include_caption=False):   
     """Determine the marginal earnings for an additional paper, research
 project, or post-grad professor.
 
@@ -473,7 +505,7 @@ Side effects:
     year = tab.meta['year']
     if not tab.meta['computed']:
         compute_table(tab)
-    filename = 'marginals-year={}-growth={:.1%}.tex'.format(year, p)
+    filename = '../tex/tab-incentives.tex'
     nl, tnl = "\n", "\\\\"
     mc = "\\multicolumn{2}{c}"
     caption = '\\caption'
@@ -490,9 +522,9 @@ Side effects:
         out.write(f"{mc + '{research grant}':>98} & {nl}")
         out.write(f"{mc + '{WoS publication}':>132} {tnl}{nl}")
         out.write(f"{'':30} & ")
-        out.write(f"{year:13} & {'all year':15} & ")
-        out.write(f"{year:13} & {'all year':15} & ")
-        out.write(f"{year:13} & {'all year':15} {tnl}{nl}")
+        out.write(f"{year:13} & {'all years':15} & ")
+        out.write(f"{year:13} & {'all years':15} & ")
+        out.write(f"{year:13} & {'all years':15} {tnl}{nl}")
         out.write(f"{'':30} & ")
         out.write(f"{'':13} & {'[CLP]':15} & ")
         out.write(f"{'':13} & {'[CLP]':15} & ")
@@ -520,6 +552,9 @@ Side effects:
 if __name__ == "__main__":
     afd_tables = [read_table(y) for y in range(2006, 2021)]
     afd_table = afd_tables[-1]
-    if 'science_incentives' in sys.argv:
+    if 'science_incentives' in sys.argv or 'all' in sys.argv:
         science_incentives(afd_table, p=0.02)
-    tab = variation(afd_tables)
+    if 'trend' in sys.argv or 'all' in sys.argv:
+        tab = variation(afd_tables)
+    if 'collaboration' in sys.argv or 'all' in sys.argv:
+        tab = collaboration(afd_table)
