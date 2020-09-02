@@ -120,8 +120,7 @@ is thus assigned a score
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{pdf/total-afd-timeseries.pdf}
-\caption{Evolution of total direct State funding to Chilean Universities, in 2018
-pesos (inflation-corrected).}
+\caption{Evolution of total direct State funding to traditional Chilean Universities, in 2020 pesos (inflation-corrected) compared to the evolution of the GDP per capita (World Bank data), the mean real wage (Instituto Nacional de Estadísticas data) the number of undergraduate students and the number of professors.}
 \label{fig:total-afd}
 \end{figure}
 
@@ -169,11 +168,11 @@ The first term in the square brackets has the same sign as $\Delta y_{j,k}$ beca
 
 \subsection{Time evolution}
 \paragraph{Total funding}
-The total funding in year $n$, that we note $F_{n}$, is a slowly increasing series (see Fig.~\ref{fig:total-afd}). In half of the years it approximately follows the consumer price index, but it has received a modest boost in other years.  The average inflation-corrected increase has been $2.3$\% per year in period 2006--2019. This increases matches the increase in undergraduate students ($+2.2\%$ in 2006--2018), real wages ($+2\%$?), and GDP per capita ($+2.xx$\%?). Increase in standard of living and student population are long-term trends that I would expect to hold for at least the next decade, so we can safely assume that University funding by the State will still follow this trend.
+The total funding in year $n$, that we note $F_{n}$, is a slowly increasing series (see Fig.~\ref{fig:total-afd}). In half of the years it approximately follows the consumer price index, but it has received a modest boost in other years.  The average inflation-corrected increase has been $2.0$\% per year in period 2006--2020. This increases matches the increase in undergraduate students ($+2.9\%$ in 2005--2019), professors ($+2.8\%$ in 2005-2019), real wages ($+2,5\%$ in 2006-2019), and GDP per capita ($+2.1$\% in 2006-2019). Table~\ref{tab:macro} in Appendix~\ref{sec:macro} gives an overview of the main macroeconomic quantities in this period. 
 
-For predictions, beyond 2019, I will therefore assume that
+Increase in standard of living and student population are long-term trends that I would expect to hold for at least the next decade, so I assume that University funding by the State will still follow this trend. For predictions, beyond 2020, I will therefore take
 \begin{equation}
-    F_{n+1} = F_n (1 + q) \label{eq:F}
+    F_{n+1} = F_n (1 + q), \label{eq:F}
 \end{equation}
 where $q = 2$\%.
 
@@ -212,53 +211,54 @@ be obtained from \url{http://dfi.mineduc.cl/usuarios/MECESUP/File/2018/instrumen
 The detail of calculations for year 2018 is given in Appendix.~\ref{sec:2018}.
 For that year, my calculations match exactly the Ministery's to the peso.
 
-\paragraph{Time-evolution} I have checked the recurrence formula \eqref{afd} using the total amount given for each year $F_n$.  The 95\% funding is well predicted from year to year, except again for 2010, where I had to substitude 2008 funding percentages to the expected 2009 ones. Because of rounding errors cumulating from year to year, the amounts I predict differ by up to 4,000 pesos (approx USD 10) with those of the Ministry.
+\paragraph{Time-evolution} I have checked the recurrence formula \eqref{afd} using the total amount given for each year $F_n$.  The 95\% funding is well predicted from year to year, except again for 2010, where I had to substitute 2008 funding percentages to the expected 2009 ones. Because of rounding errors cumulating from year to year, the amounts I predict differ by up to 4,000 pesos (approx USD 10) with those of the Ministry.
 
 \paragraph{Marginal earnings}  Marginal earnings have been determined by two methods.  The first one, using differential calculus in Sect.~\ref{sec:marginal}, and the second one, by doing the full calculation with \eqref{afd} using the new values of the coefficients.  I have checked that both method agree within a few significant digits as long as the variations remain small.
 
 \section{Value of an additional paper, project, or staff}
 \begin{table*}[t]
 \centering
-\caption{Additional earnings in 2019 Chilean pesos for thes marginal improvement of 2018 metrics: an additional one-year contract of a postgraduate professor, an additional one-year research grant, and an additional Web of Science publication.  2019 funding is accurate to 1,000 pesos. The total funding assumed that the State funding increases 2\% a year real terms.  A research grant typically lasts 3 years and will carry the same level of funding for each year it is active.  An additional tenure-track/tenured professor will bring as much funding as the years they stay hired.}
+\caption{Additional earnings in 2020 Chilean pesos for thes marginal improvement of 2019 metrics: an additional full-time contract of a postgraduate professor, an additional research grant, and an additional Web of Science (ex-ISI) publication.  2020 funding is accurate to 1,000 pesos. The total funding assumed that the State funding continues growing by 2\% a year real terms.  A research grant typically lasts 3 years and will carry the same level of funding for each year it is active.  An additional tenure-track/tenured professor will bring as many times more funding as the years they stay hired.}
 \label{tab:sciencecost}
 \begin{tabular}{l rr rr rr}
 \hline\hline
-universidad                    & \multicolumn{2}{c}{postgraduate staff} & \multicolumn{2}{c}{research grant} & \multicolumn{2}{c}{WoS publication} \\
-                               & 2019        & all years     & 2019        & all years     & 2019        & all years     \\
-                               & [CLP]       & [CLP]         & [CLP]       & [CLP]         & [CLP]       & [CLP]         \\
+university                     & 
+                          \multicolumn{2}{c}{postgraduate staff} & 
+                                                                \multicolumn{2}{c}{research grant} & 
+                                                                                                 \multicolumn{2}{c}{WoS publication} \\
+                               &          2020 & all year        &          2020 & all year        &          2020 & all year        \\
+                               &               & [CLP]           &               & [CLP]           &               & [CLP]           \\
 \hline
-U. de Chile                    &     303\,000 &     9\,774\,194 &     952\,000 &    30\,709\,677 &     517\,000 &    16\,677\,419 \\
-P. U. Católica de Chile        &     330\,000 &    10\,645\,161 &     981\,000 &    31\,645\,161 &     531\,000 &    17\,129\,032 \\
-U. de Concepción               &   1\,098\,000 &    35\,419\,355 &   1\,104\,000 &    35\,612\,903 &     640\,000 &    20\,645\,161 \\
-U. Católica de Valparaíso      &   2\,902\,000 &    93\,612\,903 &   3\,229\,000 &   104\,161\,290 &   1\,753\,000 &    56\,548\,387 \\
-U. Téc. Federico Sta.Maria     &     505\,000 &    16\,290\,323 &   2\,397\,000 &    77\,322\,581 &   1\,378\,000 &    44\,451\,613 \\
-U. de Santiago                 &     316\,000 &    10\,193\,548 &     960\,000 &    30\,967\,742 &     418\,000 &    13\,483\,871 \\
-U. Austral                     &   1\,128\,000 &    36\,387\,097 &   1\,286\,000 &    41\,483\,871 &     798\,000 &    25\,741\,935 \\
-U. Católica del Norte          &     302\,000 &     9\,741\,935 &     818\,000 &    26\,387\,097 &     964\,000 &    31\,096\,774 \\
-U. de Valparaíso               &     657\,000 &    21\,193\,548 &   1\,014\,000 &    32\,709\,677 &     357\,000 &    11\,516\,129 \\
-U. de Antofagasta              &   1\,285\,000 &    41\,451\,613 &     916\,000 &    29\,548\,387 &   1\,102\,000 &    35\,548\,387 \\
-U. de la Serena                &     227\,000 &     7\,322\,581 &   1\,008\,000 &    32\,516\,129 &   1\,376\,000 &    44\,387\,097 \\
-U. de Bio Bio                  &   4\,045\,000 &   130\,483\,871 &   1\,108\,000 &    35\,741\,935 &     669\,000 &    21\,580\,645 \\
-U. de la Frontera              &   2\,378\,000 &    76\,709\,677 &   4\,705\,000 &   151\,774\,194 &   2\,781\,000 &    89\,709\,677 \\
-U. de Magallanes               &   2\,847\,000 &    91\,838\,710 &   3\,108\,000 &   100\,258\,065 &   3\,023\,000 &    97\,516\,129 \\
-U. de Talca                    &   3\,828\,000 &   123\,483\,871 &   3\,177\,000 &   102\,483\,871 &   1\,054\,000 &    34\,000\,000 \\
-U. de Atacama                  &      20\,000 &       645\,161 &     323\,000 &    10\,419\,355 &     384\,000 &    12\,387\,097 \\
-U. de Tarapacá                 &   5\,596\,000 &   180\,516\,129 &   1\,485\,000 &    47\,903\,226 &   2\,178\,000 &    70\,258\,065 \\
-U. Arturo Prat                 &     137\,000 &     4\,419\,355 &     439\,000 &    14\,161\,290 &      97\,000 &     3\,129\,032 \\
-U. Metropolitana               &   1\,960\,000 &    63\,225\,806 &     272\,000 &     8\,774\,194 &      89\,000 &     2\,870\,968 \\
-U. de Playa Ancha              &   3\,762\,000 &   121\,354\,839 &   1\,180\,000 &    38\,064\,516 &     209\,000 &     6\,741\,935 \\
-U. Tecnológica Metropolitana   &     451\,000 &    14\,548\,387 &     519\,000 &    16\,741\,935 &     250\,000 &     8\,064\,516 \\
-U. de Los Lagos                &     886\,000 &    28\,580\,645 &     723\,000 &    23\,322\,581 &     227\,000 &     7\,322\,581 \\
-U. Católica de Maule           &   1\,918\,000 &    61\,870\,968 &     544\,000 &    17\,548\,387 &     343\,000 &    11\,064\,516 \\
-U. Católica de Temuco          &   1\,583\,000 &    51\,064\,516 &     574\,000 &    18\,516\,129 &     192\,000 &     6\,193\,548 \\
-U. C.de la Sant.Concepción     &     712\,000 &    22\,967\,742 &     571\,000 &    18\,419\,355 &     325\,000 &    10\,483\,871 \\
-U. de O'Higgins                &  22\,842\,000 &   736\,838\,710 &  12\,518\,000 &   403\,806\,452 &   8\,501\,000 &   274\,225\,806 \\
-U. de Aysén                    &  81\,972\,000 & 2\,644\,258\,065 &  64\,904\,000 & 2\,093\,677\,419 &   9\,284\,000 &   299\,483\,871 \\
+U. de Chile                    &       314,000 &      10,129,032 &       943,000 &      30,419,355 &       492,000 &      15,870,968 \\
+P. U. Católica de Chile        &       310,000 &      10,000,000 &       972,000 &      31,354,839 &       495,000 &      15,967,742 \\
+U. de Concepción               &     1,177,000 &      37,967,742 &     1,278,000 &      41,225,806 &       523,000 &      16,870,968 \\
+U. Católica de Valparaíso      &     3,048,000 &      98,322,581 &     3,150,000 &     101,612,903 &     1,634,000 &      52,709,677 \\
+U. Téc. Federico Sta. María    &       884,000 &      28,516,129 &     1,834,000 &      59,161,290 &       866,000 &      27,935,484 \\
+U. de Santiago                 &       323,000 &      10,419,355 &     1,113,000 &      35,903,226 &       379,000 &      12,225,806 \\
+U. Austral                     &     1,482,000 &      47,806,452 &     1,362,000 &      43,935,484 &       846,000 &      27,290,323 \\
+U. Católica del Norte          &       176,000 &       5,677,419 &       742,000 &      23,935,484 &       681,000 &      21,967,742 \\
+U. de Valparaíso               &       782,000 &      25,225,806 &       739,000 &      23,838,710 &       287,000 &       9,258,065 \\
+U. de Antofagasta              &     1,057,000 &      34,096,774 &     1,022,000 &      32,967,742 &     1,588,000 &      51,225,806 \\
+U. de la Serena                &       186,000 &       6,000,000 &       876,000 &      28,258,065 &       910,000 &      29,354,839 \\
+U. de Bío-bío                  &     4,319,000 &     139,322,581 &     1,464,000 &      47,225,806 &       599,000 &      19,322,581 \\
+U. de la Frontera              &     2,971,000 &      95,838,710 &     5,195,000 &     167,580,645 &     2,315,000 &      74,677,419 \\
+U. de Magallanes               &     2,841,000 &      91,645,161 &     1,593,000 &      51,387,097 &     1,860,000 &      60,000,000 \\
+U. de Talca                    &     3,791,000 &     122,290,323 &     2,305,000 &      74,354,839 &     1,056,000 &      34,064,516 \\
+U. de Atacama                  &        82,000 &       2,645,161 &       477,000 &      15,387,097 &       541,000 &      17,451,613 \\
+U. de Tarapacá                 &     5,650,000 &     182,258,065 &     1,218,000 &      39,290,323 &     1,972,000 &      63,612,903 \\
+U. Arturo Prat                 &       158,000 &       5,096,774 &       307,000 &       9,903,226 &        81,000 &       2,612,903 \\
+U. Metropolitana               &     1,833,000 &      59,129,032 &       220,000 &       7,096,774 &        66,000 &       2,129,032 \\
+U. de Playa Ancha              &     4,645,000 &     149,838,710 &       853,000 &      27,516,129 &       168,000 &       5,419,355 \\
+U. Tecnológica Metropolitana   &       937,000 &      30,225,806 &       619,000 &      19,967,742 &       230,000 &       7,419,355 \\
+U. de Los Lagos                &       816,000 &      26,322,581 &       619,000 &      19,967,742 &       204,000 &       6,580,645 \\
+U. Católica de Maule           &     1,326,000 &      42,774,194 &       539,000 &      17,387,097 &       517,000 &      16,677,419 \\
+U. Católica de Temuco          &       986,000 &      31,806,452 &       639,000 &      20,612,903 &       193,000 &       6,225,806 \\
+U. C. de la Sant. Concepción   &       527,000 &      17,000,000 &       600,000 &      19,354,839 &       341,000 &      11,000,000 \\
+U. de O'Higgins                &    27,762,000 &     895,548,387 &    28,235,000 &     910,806,452 &    11,357,000 &     366,354,839 \\
+U. de Aysén                    &    55,246,000 &   1,782,129,032 &    60,558,000 &   1,953,483,871 &    18,833,000 &     607,516,129 \\
 \hline
 \end{tabular}
 \end{table*}
-
-
 
 If an additional paper is published by a researcher of University $i$ in year $n$, it will reflect in the 5\% funding of year $n + 1$. Let us call $\Delta F_{i,n+1}$ the additional earnings 
 of the university in that year.  In the subsequent years, it will reflect via the 95\% 
@@ -355,6 +355,47 @@ The last term requires some more calculation. We use \eqref{sigma}:
         &= \frac{\xi_{i,k}}N.
 \end{align}
 
+\section{Macroeconomic quantities}
+\label{sec:macro}
+
+The Chilean consumer price index narrowly followed by the unidad de fomento (UF), a fiscal currency unit with daily conversions published by the inland revenue service known as Servicio de Impuestos Internos (SII).  The GDP growth per capita has been taken from the World Bank online database and the growth of the mean wage from the Chilean institute for Statistics (Instituto Nacional de Estadística).  They are summed up in Table~\ref{tab:macro}.
+
+\begin{table}[t]
+\centering
+\caption{Macroeconomic data for Chile 2006 to 2020: UF, a price-indexed
+fiscal currency unit, the growth of the GDP per capita, and the growth
+of the mean wage.}
+\label{tab:macro}
+\begin{tabular}{lrrr}
+\hline\hline
+year &  UF$^1$   & GDP per capita$^2$ & Mean wage$^{3,4}$\\
+     &  [CLP]    & [growth in \%]     & [growth in \%]\\
+\hline
+2006 &  18152.61 &     5.20           & 3.0\\
+2007 &  18627.89 &     3.79           & 0.5\\
+2008 &  20260.76 &     2.42           & 1.3\\
+2009 &  20930.92 &    -2.60           & 6.4\\
+2010 &  21204.99 &     4.75           & 2.9\\
+2011 &  21892.81 &     5.05           & 2.3\\
+2012 &  22627.36 &     4.30           & 4.3\\
+2013 &  22852.67 &     3.03           & 2.7\\
+2014 &  24026.01 &     0.69           & 2.5\\
+2015 &  24984.62 &     1.10           & 1.0\\
+2016 &  26053.81 &     0.37           & 1.5\\
+2017 &  26665.98 &    -0.24           & 2.6\\
+2018 &  27161.48 &     2.51           & 1.6\\
+2019 &  27908.86 &    -0.13           & 2.1$^5$\\
+2020 &  28695.46 &     ---            & ---\\
+\hline
+\multicolumn{4}{l}{$^1$ Source: SII. UF (price indexed) on July 1st}\\
+\multicolumn{4}{l}{$^2$ Sourec: World Bank}\\
+\multicolumn{4}{l}{$^3$ Source: Instituto Nacional de Estadísticas}\\
+\multicolumn{4}{l}{$^4$ From January to January}\\
+\multicolumn{4}{l}{$^5$ Up to September}\\
+\hline
+\end{tabular}
+\end{table}
+
 \section{Direct state funding in 2018}
 \label{sec:2018}
 
@@ -414,35 +455,35 @@ directo) of main Chilean Universities in 2018.}
 \centering\footnotesize
 \begin{tabular}{l rrrrrrrrrr rr}
 \hline\hline
-University                 &$x_1$& $y_1$ &$x_2$ & $y_2$ & $x_3$ & $y_3$ & $x_4$ & $y_4$ & $x_5$ & $y_5$ &  (\%) & CLP\\
+University                  &$x_1$& $y_1$ &$x_2$ & $y_2$ & $x_3$ & $y_3$ & $x_4$ & $y_4$ & $x_5$ & $y_5$ &  (\%) & CLP\\
 \hline
-U. de Chile                & 396 & 0.561 & 13.6 & 0.033 & 0.671 & 0.062 & 0.382 & 0.512 & 1.072 & 0.475 & 10.43 & 1\,220\,349\,000\\
-P. U. Católica de Chile    & 352 & 0.421 & 12.0 & 0.021 & 0.676 & 0.066 & 0.342 & 0.406 & 1.007 & 0.411 &  8.76 & 1\,025\,067\,000\\
-U. de Concepción           & 274 & 0.204 & 17.2 & 0.081 & 0.789 & 0.217 & 0.271 & 0.241 & 0.761 & 0.198 &  6.39 &    748\,010\,000\\
-U. Católica de Valparaíso  & 272 & 0.199 & 22.3 & 0.215 & 0.820 & 0.278 & 0.330 & 0.377 & 0.897 & 0.307 &  9.88 & 1\,155\,812\,000\\
-U. Téc. Fedérico Sta. María& 196 & 0.072 & 22.3 & 0.216 & 0.600 & 0.023 & 0.250 & 0.200 & 0.774 & 0.207 &  5.25 &    614\,754\,000\\
-U. de Santiago             & 274 & 0.205 & 16.6 & 0.071 & 0.619 & 0.030 & 0.187 & 0.105 & 0.520 & 0.072 &  2.32 &    271\,561\,000\\
-U. Austral                 & 220 & 0.103 & 14.5 & 0.042 & 0.689 & 0.078 & 0.202 & 0.124 & 0.610 & 0.109 &  3.09 &    362\,052\,000\\
-U. Católica del Norte      & 200 & 0.077 & 17.6 & 0.088 & 0.614 & 0.028 & 0.107 & 0.036 & 0.574 & 0.092 &  2.03 &    237\,356\,000\\
-U. de Valparaíso           & 246 & 0.145 & 16.9 & 0.075 & 0.639 & 0.040 & 0.137 & 0.056 & 0.484 & 0.060 &  1.87 &    218\,799\,000\\
-U. de Antofagasta          & 114 & 0.016 & 15.9 & 0.060 & 0.642 & 0.042 & 0.098 & 0.032 & 0.527 & 0.074 &  1.73 &    202\,772\,000\\
-U. de la Serena            & 173 & 0.049 & 19.1 & 0.121 & 0.566 & 0.013 & 0.076 & 0.022 & 0.458 & 0.052 &  1.49 &    173\,877\,000\\
-U. de Bio Bio              & 178 & 0.054 & 22.1 & 0.209 & 0.856 & 0.359 & 0.132 & 0.052 & 0.414 & 0.041 &  4.75 &    555\,201\,000\\
-U. de la Frontera          & 195 & 0.071 & 22.0 & 0.206 & 0.708 & 0.097 & 0.377 & 0.499 & 1.093 & 0.496 & 11.52 & 1\,348\,115\,000\\
-U. de Magallanes           & 110 & 0.015 & 11.0 & 0.016 & 0.482 & 0.003 & 0.101 & 0.033 & 0.414 & 0.041 &  0.84 &     97\,927\,000\\
-U. de Talca	               & 228 & 0.115 & 20.1 & 0.146 & 0.920 & 0.518 & 0.267 & 0.233 & 0.701 & 0.159 &  8.52 &    997\,062\,000\\
-U. de Atacama              &  90 & 0.009 & 20.0 & 0.144 & 0.434 & 0.001 & 0.016 & 0.008 & 0.249 & 0.015 &  0.95 &    110\,755\,000\\
-U. de Tarapacá             & 135 & 0.025 & 23.8 & 0.271 & 0.852 & 0.351 & 0.100 & 0.033 & 0.722 & 0.172 &  6.31 &    738\,384\,000\\
-U. Arturo Prat             & 111 & 0.015 &  9.8 & 0.010 & 0.515 & 0.005 & 0.036 & 0.011 & 0.131 & 0.006 &  0.26 &     30\,451\,000\\
-U. Metropolitana           & 190 & 0.065 & 14.0 & 0.036 & 0.653 & 0.049 & 0.009 & 0.007 & 0.109 & 0.005 &  0.70 &     81\,804\,000\\
-U. de Playa Ancha          & 149 & 0.032 & 18.4 & 0.104 & 0.733 & 0.128 & 0.071 & 0.021 & 0.168 & 0.008 &  1.78 &    208\,595\,000\\
-U. Tecnológica Metropolitana&221 & 0.105 & 26.8 & 0.400 & 0.591 & 0.020 & 0.044 & 0.013 & 0.211 & 0.011 &  2.38 &    278\,301\,000\\
-U. de Los Lagos            &  97 & 0.011 &  9.6 & 0.010 & 0.591 & 0.020 & 0.084 & 0.025 & 0.234 & 0.013 &  0.56 &     66\,056\,000\\
-U. Católica de Maule       & 248 & 0.151 & 17.1 & 0.080 & 0.695 & 0.083 & 0.054 & 0.016 & 0.254 & 0.015 &  1.39 &    162\,712\,000\\
-U. Católica de Temuco      & 147 & 0.031 & 17.1 & 0.078 & 0.692 & 0.081 & 0.085 & 0.026 & 0.271 & 0.017 &  1.43 &    167\,667\,000\\
-U. C.de la Sant.Concepción & 285 & 0.231 & 17.8 & 0.092 & 0.574 & 0.015 & 0.048 & 0.014 & 0.222 & 0.012 &  0.89 &    104\,634\,000\\
-U. de O'Higgins	           &   0 & 0.001 &  0.0 & 0.000 & 0.833 & 0.307 & 0.115 & 0.041 & 0.402 & 0.038 &  3.17 &    370\,823\,000\\
-U. de Aysén                &   0 & 0.001 &  0.0 & 0.000 & 0.735 & 0.130 & 0.065 & 0.019 & 0.195 & 0.010 &  1.29 &    150\,972\,000\\
+U. de Chile                 & 396 & 0.561 & 13.6 & 0.033 & 0.671 & 0.062 & 0.382 & 0.512 & 1.072 & 0.475 & 10.43 & 1\,220\,349\,000\\
+P. U. Católica de Chile     & 352 & 0.421 & 12.0 & 0.021 & 0.676 & 0.066 & 0.342 & 0.406 & 1.007 & 0.411 &  8.76 & 1\,025\,067\,000\\
+U. de Concepción            & 274 & 0.204 & 17.2 & 0.081 & 0.789 & 0.217 & 0.271 & 0.241 & 0.761 & 0.198 &  6.39 &    748\,010\,000\\
+U. Católica de Valparaíso   & 272 & 0.199 & 22.3 & 0.215 & 0.820 & 0.278 & 0.330 & 0.377 & 0.897 & 0.307 &  9.88 & 1\,155\,812\,000\\
+U. Téc. Fedérico Sta. María & 196 & 0.072 & 22.3 & 0.216 & 0.600 & 0.023 & 0.250 & 0.200 & 0.774 & 0.207 &  5.25 &    614\,754\,000\\
+U. de Santiago              & 274 & 0.205 & 16.6 & 0.071 & 0.619 & 0.030 & 0.187 & 0.105 & 0.520 & 0.072 &  2.32 &    271\,561\,000\\
+U. Austral                  & 220 & 0.103 & 14.5 & 0.042 & 0.689 & 0.078 & 0.202 & 0.124 & 0.610 & 0.109 &  3.09 &    362\,052\,000\\
+U. Católica del Norte       & 200 & 0.077 & 17.6 & 0.088 & 0.614 & 0.028 & 0.107 & 0.036 & 0.574 & 0.092 &  2.03 &    237\,356\,000\\
+U. de Valparaíso            & 246 & 0.145 & 16.9 & 0.075 & 0.639 & 0.040 & 0.137 & 0.056 & 0.484 & 0.060 &  1.87 &    218\,799\,000\\
+U. de Antofagasta           & 114 & 0.016 & 15.9 & 0.060 & 0.642 & 0.042 & 0.098 & 0.032 & 0.527 & 0.074 &  1.73 &    202\,772\,000\\
+U. de la Serena             & 173 & 0.049 & 19.1 & 0.121 & 0.566 & 0.013 & 0.076 & 0.022 & 0.458 & 0.052 &  1.49 &    173\,877\,000\\
+U. de Bio Bio               & 178 & 0.054 & 22.1 & 0.209 & 0.856 & 0.359 & 0.132 & 0.052 & 0.414 & 0.041 &  4.75 &    555\,201\,000\\
+U. de la Frontera           & 195 & 0.071 & 22.0 & 0.206 & 0.708 & 0.097 & 0.377 & 0.499 & 1.093 & 0.496 & 11.52 & 1\,348\,115\,000\\
+U. de Magallanes            & 110 & 0.015 & 11.0 & 0.016 & 0.482 & 0.003 & 0.101 & 0.033 & 0.414 & 0.041 &  0.84 &     97\,927\,000\\
+U. de Talca	                & 228 & 0.115 & 20.1 & 0.146 & 0.920 & 0.518 & 0.267 & 0.233 & 0.701 & 0.159 &  8.52 &    997\,062\,000\\
+U. de Atacama               &  90 & 0.009 & 20.0 & 0.144 & 0.434 & 0.001 & 0.016 & 0.008 & 0.249 & 0.015 &  0.95 &    110\,755\,000\\
+U. de Tarapacá              & 135 & 0.025 & 23.8 & 0.271 & 0.852 & 0.351 & 0.100 & 0.033 & 0.722 & 0.172 &  6.31 &    738\,384\,000\\
+U. Arturo Prat              & 111 & 0.015 &  9.8 & 0.010 & 0.515 & 0.005 & 0.036 & 0.011 & 0.131 & 0.006 &  0.26 &     30\,451\,000\\
+U. Metropolitana            & 190 & 0.065 & 14.0 & 0.036 & 0.653 & 0.049 & 0.009 & 0.007 & 0.109 & 0.005 &  0.70 &     81\,804\,000\\
+U. de Playa Ancha           & 149 & 0.032 & 18.4 & 0.104 & 0.733 & 0.128 & 0.071 & 0.021 & 0.168 & 0.008 &  1.78 &    208\,595\,000\\
+U. Tecnológica Metropolitana&221  & 0.105 & 26.8 & 0.400 & 0.591 & 0.020 & 0.044 & 0.013 & 0.211 & 0.011 &  2.38 &    278\,301\,000\\
+U. de Los Lagos             &  97 & 0.011 &  9.6 & 0.010 & 0.591 & 0.020 & 0.084 & 0.025 & 0.234 & 0.013 &  0.56 &     66\,056\,000\\
+U. Católica de Maule        & 248 & 0.151 & 17.1 & 0.080 & 0.695 & 0.083 & 0.054 & 0.016 & 0.254 & 0.015 &  1.39 &    162\,712\,000\\
+U. Católica de Temuco       & 147 & 0.031 & 17.1 & 0.078 & 0.692 & 0.081 & 0.085 & 0.026 & 0.271 & 0.017 &  1.43 &    167\,667\,000\\
+U. C.de la Sant.Concepción  & 285 & 0.231 & 17.8 & 0.092 & 0.574 & 0.015 & 0.048 & 0.014 & 0.222 & 0.012 &  0.89 &    104\,634\,000\\
+U. de O'Higgins	            &   0 & 0.001 &  0.0 & 0.000 & 0.833 & 0.307 & 0.115 & 0.041 & 0.402 & 0.038 &  3.17 &    370\,823\,000\\
+U. de Aysén                 &   0 & 0.001 &  0.0 & 0.000 & 0.735 & 0.130 & 0.065 & 0.019 & 0.195 & 0.010 &  1.29 &    150\,972\,000\\
 \hline
 \end{tabular}
 \end{table*}
@@ -457,3 +498,4 @@ U. de Aysén                &   0 & 0.001 &  0.0 & 0.000 & 0.735 & 0.130 & 0.065
 \bibliography{afd}
 
 \end{document}
+

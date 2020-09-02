@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 from openpyxl import load_workbook
 from astropy.table import Table
 import numpy as np
@@ -5,11 +7,14 @@ import scipy as sp
 import scipy.stats
 from matplotlib import pylab as pl
 import re
+import sys
 
 class AFD:
+
     c = np.array([0.01, 0.15, 0.24, 0.25, 0.35])
     metrics = np.array(['U', 'M', 'S', 'Sp', 'G', 'P'])
-    def __init__(self, start = 2006, end = 2019):
+
+    def __init__(self, start = 2006, end = 2020):
         self.years = np.arange(start, end + 1)
         self.nyear = len(self.years)
         self.nuniv = 27
@@ -20,22 +25,27 @@ class AFD:
         self.afd05 = data[-2].sum(axis=-1)
         self.afd95 = data[-1].sum(axis=-1)
         self._compute()
+
     def _compute_x(self):
         data = self.data
         self.x = data[...,[0,0,3,4,5]] / np.maximum(1e-3, data[...,[1,2,2,2,2]])
+
     def _compute_xi(self):
         x = self.x
         mean = x.mean(axis=1)[:,None,:]
         std = x.std(axis=1, ddof=0)[:,None,:]
         self.xi = (x - mean) / std 
         self.xi.fill_value = np.log(1e+20)
+
     def _compute_y(self):
         self.y = np.exp((self.xi / 4 - 7/5) ** 3) 
+
     def _compute_p(self):
         ysum = np.sum(self.y * self.c, axis=-1)
         ytot = ysum.sum(axis=-1)
         self.p = y / ytot[:,None,None]
         self.psum = ysum / ytot[:,None]
+
     def _compute_afd(self):
         this = self.years - self.start
         ref = this - (self.years == 2010) 
@@ -44,6 +54,7 @@ class AFD:
             ref_funding = self.afd95[j] + self.afd05[j]
             ref_p = self.data[j,:,6:8].sum(axis=1) / ref_funding
             self.data[i,:,7] = self.afd95[i] * ref_p
+
     def _compute(self, exclude=None):
         if exclude not in ['x', 'xi', 'y']:
             self._compute_x()
@@ -53,23 +64,30 @@ class AFD:
             self._compute_y()
         self._compute_p()
         self._compute_afd()
+
     def change_metric(self, metric, years, values, unit='number'):
         im = np.argwhere(self.metric == metric)[0,0] 
         iy = np.argwhere(years, values)
             
 
-def read_table(year, compute=True, fill_missing=False):
-    book = load_workbook('../src/tabla-afd.xlsx')
+def read_table(year, compute=False, fill_missing=False):
+    book = load_workbook('../src/tabla-afd.xlsx', read_only=True)
     sheet = book[book.sheetnames[0]]
-    if year >= 2018:
-        nuniv = 27
-        first = 15 + (nuniv + 9) * (2019 - year)
-    else:
-        nuniv = 25
-        first = 86 + (nuniv + 8) * (2017 - year)
+    nuniv = 25 + 2 * (year >= 2018)
+    first = 15 + 35 * (2020 - year)
     last = first + nuniv - 1
     area = 'A{}:L{}'.format(first, last)
-    values = [tuple(c.value for c in r) for r in sheet[area]]
+    values = [list(c.value for c in r) for r in sheet[area]]
+    short = ['de', 'del', 'la', 'el', 'las', 'los']
+    for i, row in enumerate(values):
+        uni = row[0]
+        uni = re.sub('\.(?=\S)', '. ', uni)
+        uni = re.sub('Maria', 'María', uni)
+        uni = re.sub('Bio Bio', 'Bío-Bío', uni)
+        uni = ' '.join([c.capitalize() if c not in short else c 
+                for c in re.split('\s+', uni)])
+        uni = re.sub("O'h", "O'H", uni)
+        row[0] = uni
     if fill_missing and year <= 2017:
         values.append(("U. de O'Higgins",) + (np.nan,) * 11)
         values.append(("U. de Aysén",) + (np.nan,) * 11)
@@ -78,6 +96,8 @@ def read_table(year, compute=True, fill_missing=False):
     tab.remove_columns(['Pi', 'Ps'])
     if compute:
         compute_table(tab)
+    tab.meta['year'] = year
+    tab.meta['computed'] = bool(compute)
     return tab
 
 def set_column_group(tab, x, name):
@@ -120,9 +140,9 @@ def compute_table(tab, skip=None):
     f = [pk * afd5 for pk in p]
     set_column_group(tab, f, 'f')
     set_column(tab, np.round(tab['p'] * afd5), name='f')
+    tab.meta['computed'] = True
 
 def change_metric(tab, univ, name, increment=1, unit='number'):
-    compute_table(tab)
     tab = tab.copy()
     if unit == 'stdev':
         s = tab[univ]['S']
@@ -378,42 +398,128 @@ def cumulated(univ=[[0, 1],[2,3]], start=2006, metric='Sp', ny=30, p=1.00,
 #cumulated(metric='Sp',start=2006,univ=[[0, 1],[2, 3]],ny=30, name='staff.pdf')
 #cumulated(metric='G',start=2016,univ=[[0,1],[2,3]],ny=3, name='postdoc.pdf')
 
-def science_incentives(year=2019, p=1.02):   
-    tab = read_table(year)
-    out = open('marginals-year={}-growth={:.1%}.tex'.format(year, p-1), 'w')
-    out.write('\\begin{tabular}{l rr rr}\n')
-    out.write('\\hline\\hline\n')
-    out.write('{:30} & {:26} & {:26} & {:26} \\\\\n'.format('universidad', 
-        '\multicolumn{2}{c}{postgraduate staff}', 
-        '\multicolumn{2}{c}{research grant}', 
-        '\multicolumn{2}{c}{WoS publication}'))
-    out.write(('{:30}' + ' & {:11} & {:13}' * 3 + ' \\\\\n').format('',
-            *(['2019', 'all years'] * 3)))
-    out.write(('{:30}' + ' & {:11} & {:13}' * 3 + ' \\\\\n').format('', *(['[CLP]'] * 6)))
-    out.write('\\hline')
-    for k in range(len(tab)):
-        #tab1 = change_metric(tab, k, 'U', increment=1) 
-        #df21 = tab1[k]['f'] - tab[k]['f']
-        #tab1 = change_metric(tab, k, 'U', increment=0.1, unit='stdev')
-        #df22 = (tab1[k]['f'] - tab[k]['f']) / tab[k]['f']
-        tab1 = change_metric(tab, k, 'Sp', increment=1) 
-        df31 = tab1[k]['f'] - tab[k]['f']
-        #tab1 = change_metric(tab, k, 'Sp', increment=0.1, unit='stdev')
-        #df32 = (tab1[k]['f'] - tab[k]['f']) / tab[k]['f']
-        tab1 = change_metric(tab, k, 'G', increment=1) 
-        df41 = tab1[k]['f'] - tab[k]['f']
-        #tab1 = change_metric(tab, k, 'G', increment=0.1, unit='stdev')
-        #df42 = (tab1[k]['f'] - tab[k]['f']) / tab[k]['f']
-        tab1 = change_metric(tab, k, 'P', increment=1) 
-        df51 = tab1[k]['f'] - tab[k]['f']
-        #tab1 = change_metric(tab, k, 'P', increment=0.1, unit='stdev')
-        #df52 = (tab1[k]['f'] - tab[k]['f']) / tab[k]['f']
-        #out.write('{:30} {:5.0f} {:7.2%} {:5.0f} {:7.2%} {:5.0f} {:7.2%} {:5.0f} {:7.2%}'.format(tab[k]['University'], df21, df22, df31, df32, df41, df42, df51, df52))
-        u = tab[k]['University']
-        f = 1 / (1 - 0.95 * p)
-        out.write(('{:30}' + ' & {:11,.0f} & {:13,.0f}' * 3 +  ' \\\\\n').format(u, 
-            1e3*df31, 1e3*df31*f, 1e3*df41, 1e3*df41*f, 1e3*df51, 1e3*df51*f))
-    out.write('\\hline\n')
-    out.write('\\end{tabular}\n')
+def variation(tabs):
+    years = [tab.meta['year'] for tab in tabs]
+    names = tabs[0].colnames[1:]
+    rows = [(str(tab.meta['year']),) + tuple(float(sum(tab[name])) for name in names) 
+                for tab in tabs]
+    tab = Table(rows=rows, names=['year', *names])
+    tab.remove_column('%_AFD5%')
+    tab.add_column(tab['AFD5%'] +  tab['AFD95%'], name='AFD')
+    uf = Table.read('../src/macro.tsv', format='ascii.basic')
+    growth = uf['growth'][:-1]
+    ir_growth = uf['IR'][:-1]
+    tab.add_column(uf['UF'], name='UF')
+    tab.add_column(tab['AFD'] * (tab['UF'][-1] / tab['UF']), name='AFD_real')
+    first, last = tab[0], tab[-1]
+    ny = int(last['year']) - int(first['year'])
+    increase = [(last[n] / first[n])**(1/ny) - 1 for n in tab.colnames[1:]]
+    row = ('increase', *increase)
+    tab.add_row(row)
+    mean_growth = np.exp(np.mean([np.log(1+g/100) for g in growth])) - 1
+    mean_ir_growth = np.exp(np.mean([np.log(1+g/100) for g in ir_growth])) - 1
+    f = (1 + growth/100)
+    ir_f = (1 + ir_growth/100)
+    gdp = (1/f[::-1]).cumprod()[::-1].tolist()
+    gdp += [1, mean_growth]
+    ir = (1/ir_f[::-1]).cumprod()[::-1].tolist()
+    ir += [1, mean_ir_growth]
+    tab.add_column(gdp, name='GDP_percapita')
+    tab.add_column(ir, name='IR_real')
+    fig = pl.figure(1)
+    fig.clf()
+    ax = fig.add_subplot(111)
+    line1 = ax.plot(years, tab['AFD_real'][:-1], 'k-', 
+            label=f"AFD ({tab['AFD_real'][-1]:+.1%})")
+    ax.set_ylabel('AFD [2020 Chilean pesos]')
+    ax.set_ylim(0, ax.get_ylim()[1])
+    ax2 = ax.twinx()
+    line2 = ax2.plot(years, tab['GDP_percapita'][:-1], 'k--',
+            label=f"GDP per cápita ({mean_growth:+.1%})")
+    line3 = ax2.plot(years, tab['IR_real'][:-1], 'k-.',
+            label=f"Mean real wage ({mean_ir_growth:+.1%})")
+    line4 = ax2.plot(years, tab['U'][:-1] / tab['U'][-2], 
+            color=(.5, .5, .5), linestyle='--',
+            label=f"undergraduates ({tab['U'][-1]:+.1%})")
+    line5 = ax2.plot(years, tab['S'][:-1] / tab['S'][-2], 
+            color=(.5, .5, .5), linestyle='-',
+            label=f"professors ({tab['S'][-1]:+.1%})")
+    ax2.set_ylim(0, ax2.get_ylim()[1])
+    ax2.set_ylabel('relative value')
+    lines = line1 + line2 + line3 + line4 + line5
+    labels = [l.get_label() for l in lines]
+    ax.legend(lines, labels)
+    fig.show()
+    fig.savefig('../pdf/total-afd-timeseries.pdf')
+    return tab
 
-science_incentives()
+def science_incentives(tab, p=1.02, include_caption=False):   
+    """Determine the marginal earnings for an additional paper, research
+project, or post-grad professor.
+
+Arguments:
+    tab:
+        AFD table
+    p:
+        Yearly increase of total AFD (in constant Chilean pesos).
+
+Returns:
+    None
+
+Side effects:
+    LaTex table
+        
+    """
+    year = tab.meta['year']
+    if not tab.meta['computed']:
+        compute_table(tab)
+    filename = 'marginals-year={}-growth={:.1%}.tex'.format(year, p)
+    nl, tnl = "\n", "\\\\"
+    mc = "\\multicolumn{2}{c}"
+    caption = '\\caption'
+    label = '\\label'
+    with open(filename, 'w') as out:
+        if include_caption:
+            out.write('\\begin{table}\n')
+            out.write(f"{caption}{{Additional earnings in {year} and subsequent years if a University had improved the following metrics in {year-1}: one additional full-time contract for a post-graduate professor, one additional ongoing research grant, and one additional Web of Science (ex-ISI) publication. It is assumed that the total State funding will continue to grow 2\% per year. Grants and professor contracts cumulate earnings of the same magnitude for each year there are active. Publications that involve collaborations between traditional Universities generate different marginal earnings.}}{nl}")
+            out.write(f"{label}{{tab:incentives:2000}}{nl}")
+        out.write('\\begin{tabular}{l rr rr rr}\n')
+        out.write('\\hline\\hline\n')
+        out.write(f"{'university':30} & {nl}")
+        out.write(f"{mc + '{postgraduate staff}':>64} & {nl}")
+        out.write(f"{mc + '{research grant}':>98} & {nl}")
+        out.write(f"{mc + '{WoS publication}':>132} {tnl}{nl}")
+        out.write(f"{'':30} & ")
+        out.write(f"{year:13} & {'all year':15} & ")
+        out.write(f"{year:13} & {'all year':15} & ")
+        out.write(f"{year:13} & {'all year':15} {tnl}{nl}")
+        out.write(f"{'':30} & ")
+        out.write(f"{'':13} & {'[CLP]':15} & ")
+        out.write(f"{'':13} & {'[CLP]':15} & ")
+        out.write(f"{'':13} & {'[CLP]':15} {tnl}{nl}")
+        out.write('\\hline\n')
+        f = 1 / (1 - 0.95 * (1+p))
+        for k in range(len(tab)):
+            tab1 = change_metric(tab, k, 'Sp', increment=1) 
+            df31 = 1e3 * (tab1[k]['f'] - tab[k]['f'])
+            tab1 = change_metric(tab, k, 'G', increment=1) 
+            df41 = 1e3 * (tab1[k]['f'] - tab[k]['f'])
+            tab1 = change_metric(tab, k, 'P', increment=1) 
+            df51 = 1e3 * (tab1[k]['f'] - tab[k]['f'])
+            u = tab[k]['University']
+            out.write(f"{u:30} & ")
+            out.write(f"{df31:13,.0f} & {df31*f:15,.0f} & ")
+            out.write(f"{df41:13,.0f} & {df41*f:15,.0f} & ")
+            out.write(f"{df51:13,.0f} & {df51*f:15,.0f} {tnl}{nl}")
+        out.write('\\hline\n')
+        out.write('\\end{tabular}\n')
+        if include_caption:
+            out.write('\\end{table}')
+    print(f'Incentives written into {filename}')
+
+if __name__ == "__main__":
+    afd_tables = [read_table(y) for y in range(2006, 2021)]
+    afd_table = afd_tables[-1]
+    if 'science_incentives' in sys.argv:
+        science_incentives(afd_table, p=0.02)
+    tab = variation(afd_tables)
