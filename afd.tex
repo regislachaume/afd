@@ -9,6 +9,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{url}
+\usepackage{rotating}
 % \usepackage{subequations}
 
 \def\npup{\ensuremath{U}}
@@ -101,7 +102,7 @@ $c_5$ & papers-to-staff         & 0.35\\
 \end{table}
 
 
-Art. 2 of Decree with Force of Law 4 of 1980 indicates that 5\% of the funding
+Art.~2 of Decree with Force of Law~4 of 1980 indicates that 5\% of the funding
 is indexed on a weighted average of the metrics $y_{i,n,k}$ (k in $1\cdots5$)
 (see Sect.~\ref{sec:metrics}). The weights $c_k$ may vary from year to year,
 but have been constant since 1998 (see Table~\ref{tab:coeff}).  University $i$
@@ -128,7 +129,7 @@ is thus assigned a score
 \subsubsection{Marginal earnings}
 \label{sec:marginal} 
 
-In this section, we focus on a yearly snapshot and drop the $n$ index in the formulae.  We examine the case where university $i$ decides to increase one of its ratios number $k$ by a small number of standard deviations $\Delta\xi_{i,k}$, so that the ratio $x_{i,k}$ improves by $\Delta x_{i,k} = \sigma_k\Delta\xi_{i,k}$.
+In this section, I focus on a yearly snapshot and drop the $n$ index in the formulae.  I examine the case where university $i$ decides to increase one of its ratios number $k$ by a small number of standard deviations $\Delta\xi_{i,k}$, so that the ratio $x_{i,k}$ improves by $\Delta x_{i,k} = \sigma_k\Delta\xi_{i,k}$.
 
 For any university $j$, the new value of the score $y_{j,k}$ is usually modified because the mean and standard deviation are changed via $x_{i,k}$.  The difference $\Delta y_{j,k}$ is given by differentiating \eqref{transform}, and in turn \eqsref{mu}{xi} on which it depends.
 The calculation, detailed in  in Appendix~\ref{sec:calculus}, yields
@@ -156,7 +157,7 @@ The meaning of \eqref{modif} is the following:
     For both effects combined, University $j$ benefits if $\xi_{i,k}\xi_{j,k} < -1$ and is harmed otherwise. 
 \end{enumerate}
 
-To determine the additional funding fraction $\Delta f_j$, we propagate 
+To determine the additional funding fraction $\Delta f_j$, let's propagate 
 \eqref{modif} into \eqsref{y}{f}:
 \begin{equation}
     \frac{\Delta f_j}{f_j} = c_k \left[
@@ -168,7 +169,7 @@ The first term in the square brackets has the same sign as $\Delta y_{j,k}$ beca
 
 \subsection{Time evolution}
 \paragraph{Total funding}
-The total funding in year $n$, that we note $F_{n}$, is a slowly increasing series (see Fig.~\ref{fig:total-afd}). In half of the years it approximately follows the consumer price index, but it has received a modest boost in other years.  The average inflation-corrected increase has been $2.0$\% per year in period 2006--2020. This increases matches the increase in undergraduate students ($+2.9\%$ in 2005--2019), professors ($+2.8\%$ in 2005-2019), real wages ($+2,5\%$ in 2006-2019), and GDP per capita ($+2.1$\% in 2006-2019). Table~\ref{tab:macro} in Appendix~\ref{sec:macro} gives an overview of the main macroeconomic quantities in this period. 
+The total funding in year $n$, $F_{n}$, is a slowly increasing series (see Fig.~\ref{fig:total-afd}). In half of the years it approximately follows the consumer price index, but it has received a modest boost in other years.  The average inflation-corrected increase has been $2.0$\% per year in period 2006--2020. This increases matches the increase in undergraduate students ($+2.9\%$ in 2005--2019), professors ($+2.8\%$ in 2005-2019), real wages ($+2,5\%$ in 2006-2019), and GDP per capita ($+2.1$\% in 2006-2019). Table~\ref{tab:macro} in Appendix~\ref{sec:macro} gives an overview of the main macroeconomic quantities in this period. 
 
 Increase in standard of living and student population are long-term trends that I would expect to hold for at least the next decade, so I assume that University funding by the State will still follow this trend. For predictions, beyond 2020, I will therefore take
 \begin{equation}
@@ -215,49 +216,14 @@ For that year, my calculations match exactly the Ministery's to the peso.
 
 \paragraph{Marginal earnings}  Marginal earnings have been determined by two methods.  The first one, using differential calculus in Sect.~\ref{sec:marginal}, and the second one, by doing the full calculation with \eqref{afd} using the new values of the coefficients.  I have checked that both method agree within a few significant digits as long as the variations remain small.
 
-\section{Value of an additional paper, project, or staff}
+\section{Incentives \& desincentives}
+\subsection{Marginal earnings}
+\label{tab:sciencecost}
 \begin{table*}[t]
 \centering
 \caption{Additional earnings in 2020 Chilean pesos for thes marginal improvement of 2019 metrics: an additional full-time contract of a postgraduate professor, an additional research grant, and an additional Web of Science (ex-ISI) publication.  2020 funding is accurate to 1,000 pesos. The total funding assumed that the State funding continues growing by 2\% a year real terms.  A research grant typically lasts 3 years and will carry the same level of funding for each year it is active.  An additional tenure-track/tenured professor will bring as many times more funding as the years they stay hired.}
-\label{tab:sciencecost}
-\begin{tabular}{l rr rr rr}
-\hline\hline
-university                     & 
-                          \multicolumn{2}{c}{postgraduate staff} & 
-                                                                \multicolumn{2}{c}{research grant} & 
-                                                                                                 \multicolumn{2}{c}{WoS publication} \\
-                               &          2020 & all year        &          2020 & all year        &          2020 & all year        \\
-                               &               & [CLP]           &               & [CLP]           &               & [CLP]           \\
-\hline
-U. de Chile                    &       314,000 &      10,129,032 &       943,000 &      30,419,355 &       492,000 &      15,870,968 \\
-P. U. Católica de Chile        &       310,000 &      10,000,000 &       972,000 &      31,354,839 &       495,000 &      15,967,742 \\
-U. de Concepción               &     1,177,000 &      37,967,742 &     1,278,000 &      41,225,806 &       523,000 &      16,870,968 \\
-U. Católica de Valparaíso      &     3,048,000 &      98,322,581 &     3,150,000 &     101,612,903 &     1,634,000 &      52,709,677 \\
-U. Téc. Federico Sta. María    &       884,000 &      28,516,129 &     1,834,000 &      59,161,290 &       866,000 &      27,935,484 \\
-U. de Santiago                 &       323,000 &      10,419,355 &     1,113,000 &      35,903,226 &       379,000 &      12,225,806 \\
-U. Austral                     &     1,482,000 &      47,806,452 &     1,362,000 &      43,935,484 &       846,000 &      27,290,323 \\
-U. Católica del Norte          &       176,000 &       5,677,419 &       742,000 &      23,935,484 &       681,000 &      21,967,742 \\
-U. de Valparaíso               &       782,000 &      25,225,806 &       739,000 &      23,838,710 &       287,000 &       9,258,065 \\
-U. de Antofagasta              &     1,057,000 &      34,096,774 &     1,022,000 &      32,967,742 &     1,588,000 &      51,225,806 \\
-U. de la Serena                &       186,000 &       6,000,000 &       876,000 &      28,258,065 &       910,000 &      29,354,839 \\
-U. de Bío-bío                  &     4,319,000 &     139,322,581 &     1,464,000 &      47,225,806 &       599,000 &      19,322,581 \\
-U. de la Frontera              &     2,971,000 &      95,838,710 &     5,195,000 &     167,580,645 &     2,315,000 &      74,677,419 \\
-U. de Magallanes               &     2,841,000 &      91,645,161 &     1,593,000 &      51,387,097 &     1,860,000 &      60,000,000 \\
-U. de Talca                    &     3,791,000 &     122,290,323 &     2,305,000 &      74,354,839 &     1,056,000 &      34,064,516 \\
-U. de Atacama                  &        82,000 &       2,645,161 &       477,000 &      15,387,097 &       541,000 &      17,451,613 \\
-U. de Tarapacá                 &     5,650,000 &     182,258,065 &     1,218,000 &      39,290,323 &     1,972,000 &      63,612,903 \\
-U. Arturo Prat                 &       158,000 &       5,096,774 &       307,000 &       9,903,226 &        81,000 &       2,612,903 \\
-U. Metropolitana               &     1,833,000 &      59,129,032 &       220,000 &       7,096,774 &        66,000 &       2,129,032 \\
-U. de Playa Ancha              &     4,645,000 &     149,838,710 &       853,000 &      27,516,129 &       168,000 &       5,419,355 \\
-U. Tecnológica Metropolitana   &       937,000 &      30,225,806 &       619,000 &      19,967,742 &       230,000 &       7,419,355 \\
-U. de Los Lagos                &       816,000 &      26,322,581 &       619,000 &      19,967,742 &       204,000 &       6,580,645 \\
-U. Católica de Maule           &     1,326,000 &      42,774,194 &       539,000 &      17,387,097 &       517,000 &      16,677,419 \\
-U. Católica de Temuco          &       986,000 &      31,806,452 &       639,000 &      20,612,903 &       193,000 &       6,225,806 \\
-U. C. de la Sant. Concepción   &       527,000 &      17,000,000 &       600,000 &      19,354,839 &       341,000 &      11,000,000 \\
-U. de O'Higgins                &    27,762,000 &     895,548,387 &    28,235,000 &     910,806,452 &    11,357,000 &     366,354,839 \\
-U. de Aysén                    &    55,246,000 &   1,782,129,032 &    60,558,000 &   1,953,483,871 &    18,833,000 &     607,516,129 \\
-\hline
-\end{tabular}
+\setlength\tabcolsep{5pt}
+\input tex/tab-incentives.tex
 \end{table*}
 
 If an additional paper is published by a researcher of University $i$ in year $n$, it will reflect in the 5\% funding of year $n + 1$. Let us call $\Delta F_{i,n+1}$ the additional earnings 
@@ -278,20 +244,31 @@ The additional funding obtained by the university in all years is therefore
 \end{align}
 
 The determination of $\Delta F_{i,n+1}$ is straightforward.  The calculations
-in \eqsref{x1}{afd}) are done with the metrics provided by the Ministry (see Sect.~\ref{sec:metrics}) and for the same ones with an additional publication.  The difference in funding is $\Delta F_{i,n+1}$. 
+in \eqsref{x1}{afd} are done with the metrics provided by the Ministry (see Sect.~\ref{sec:metrics}) and for the same ones with an additional publication.  The difference in funding is $\Delta F_{i,n+1}$. 
 
-Table~\ref{tab:sciencecost} gives the 2019 funding a University would have received, had an additional 2019 paper been published, an additional one-year science staff (professor) been contracted, or an additional grant been obtained (postdoct staff or other project).  I have made the hypothesis, that no other Traditional University has co-authored the paper, in which case the amount may vary. 
+Table~\ref{tab:sciencecost} gives the 2019 funding a University would have received, had an additional 2019 paper been published, an additional one-year science staff (professor) been contracted, or an additional grant been obtained (postdoct staff or other project).  I have made the hypothesis that no other Traditional University has co-authored the paper, in which case the amount may vary. 
 
 My figures are much larger than those derived by \citet{RAM12}.  The reasons are that they
 \begin{enumerate}
 \item only consider the first five years after the paper is published while the half-life of the 95\% dampening is 14 years, meaning that they underestimate the total revenue obtained with a paper by a factor of $\approx 4$
 \item include an additional dampening of 8\% per year that they do not justify and is not based on any kind of calculation by the Ministry, meaning that they underestimate the additional funding by a factor of $\approx 2.5$ to 4;\footnote{Quite the contrary, the constant increase of the total funding (consumer price index +2\%) calls for an amplification of 2\%}
 \item use 2010 data, meaning that the monetary incentive is larger than the 2018 one by a factor of $\approx 2$; and
-\item seem to use different values for the coefficients than those retroactively published in 2012. Their Fig.~4 doesn't match the corrected coefficients we derive for 2009, 2010, or 2011. Actually, both our data and Ministry's figures for years 2006 to 2017 show a systematic discrepancy between U. de Chile and P. U. Católica de Chile of the order of 25-35\%  in weighted sum of corrected coefficients and share of the 5\%, while their Figure gives about 10\%.
+\item seem to use different values for the coefficients than those retroactively published in 2012. Their Fig.~4 doesn't match the corrected coefficients I derive for 2009, 2010, or 2011. Actually, both our data and Ministry's figures for years 2006 to 2017 show a systematic discrepancy between U. de Chile and P. U. Católica de Chile of the order of 25-35\%  in weighted sum of corrected coefficients and share of the 5\%, while their Figure gives about 10\%.
 \end{enumerate}
 
+\subsection{Value of collaborations}
+
 \appendix
-\section{Derivation of equation}
+\section{Appendix}
+\begin{table}[t]
+\centering
+\caption{Macroeconomic data for Chile 2006 to 2020: UF, a price-indexed
+fiscal currency unit, the growth of the GDP per capita, and the growth
+of the mean wage.}
+\label{tab:macro}
+\input tex/tab-macro.tex
+\end{table}
+\subsection{Derivation of equation}
 \label{sec:calculus}
 The variation in $\Delta y_{j,k}$ is linked to $\Delta \xi_{i,k}$ via the
 derivative:
@@ -333,7 +310,7 @@ In the second factor, the first term is one if $i = j$, $x_{j,k}$ and $x_{i,k}$ 
                              = \frac 1N. \label{eq:dermu}
 \end{align}
 
-The last term requires some more calculation. We use \eqref{sigma}:
+The last term requires some more calculation. Let's use \eqref{sigma}:
 \begin{align}
     \pder{\sigma_k}{x_{i,k}}
         &= \pder{}{x_{i,k}} \sqrt{\frac 1N \Big(\sum_j x_{j,n,k}^2\Big) - \mu_{n,k}^2},\\
@@ -355,141 +332,42 @@ The last term requires some more calculation. We use \eqref{sigma}:
         &= \frac{\xi_{i,k}}N.
 \end{align}
 
-\section{Macroeconomic quantities}
+
+\subsection{Macroeconomic quantities}
 \label{sec:macro}
 
 The Chilean consumer price index narrowly followed by the unidad de fomento (UF), a fiscal currency unit with daily conversions published by the inland revenue service known as Servicio de Impuestos Internos (SII).  The GDP growth per capita has been taken from the World Bank online database and the growth of the mean wage from the Chilean institute for Statistics (Instituto Nacional de Estadística).  They are summed up in Table~\ref{tab:macro}.
 
-\begin{table}[t]
-\centering
-\caption{Macroeconomic data for Chile 2006 to 2020: UF, a price-indexed
-fiscal currency unit, the growth of the GDP per capita, and the growth
-of the mean wage.}
-\label{tab:macro}
-\begin{tabular}{lrrr}
-\hline\hline
-year &  UF$^1$   & GDP per capita$^2$ & Mean wage$^{3,4}$\\
-     &  [CLP]    & [growth in \%]     & [growth in \%]\\
-\hline
-2006 &  18152.61 &     5.20           & 3.0\\
-2007 &  18627.89 &     3.79           & 0.5\\
-2008 &  20260.76 &     2.42           & 1.3\\
-2009 &  20930.92 &    -2.60           & 6.4\\
-2010 &  21204.99 &     4.75           & 2.9\\
-2011 &  21892.81 &     5.05           & 2.3\\
-2012 &  22627.36 &     4.30           & 4.3\\
-2013 &  22852.67 &     3.03           & 2.7\\
-2014 &  24026.01 &     0.69           & 2.5\\
-2015 &  24984.62 &     1.10           & 1.0\\
-2016 &  26053.81 &     0.37           & 1.5\\
-2017 &  26665.98 &    -0.24           & 2.6\\
-2018 &  27161.48 &     2.51           & 1.6\\
-2019 &  27908.86 &    -0.13           & 2.1$^5$\\
-2020 &  28695.46 &     ---            & ---\\
-\hline
-\multicolumn{4}{l}{$^1$ Source: SII. UF (price indexed) on July 1st}\\
-\multicolumn{4}{l}{$^2$ Sourec: World Bank}\\
-\multicolumn{4}{l}{$^3$ Source: Instituto Nacional de Estadísticas}\\
-\multicolumn{4}{l}{$^4$ From January to January}\\
-\multicolumn{4}{l}{$^5$ Up to September}\\
-\hline
-\end{tabular}
-\end{table}
 
-\section{Direct state funding in 2018}
+\subsection{Direct state funding in 2018}
 \label{sec:2018}
 
-Table~\ref{tab:metrics} and \ref{tab:calcdetail} show the metrics used by the
+Table~\ref{tab:calcdetail} show the metrics used by the
 Ministry in 2018 and the calculation details for $x_k$ and $y_k$. 
 
-\begin{table*}[t]
-\caption{Metrics used for the Direct State funding (aporte fiscal directo) of
-main Chilean Universities in 2018. \npup{}, the number of
+\begin{sidewaystable*}[p]
+\centering
+\caption{
+Metrics used for the calculations of the Direct State funding (aporte fiscal 
+directo) of traditional Chilean Universities in 2018: \npup{}, the number of
 undergrad students; \nmaj{}, the number of majors; \nprof{}, the number of
 (equivalent) full-time professors and researchers (``académico''); \ngrad{},
 the number of (equivalent) full-time staff with post-graduate title; \ngrant{},
 the number of research grants; $\nisi$, the number of ISI publications; and
-$\nscielo$, the number of non-ISI publications indexed by the Scientif
-Electronic Library Online Chile.}
-\label{tab:metrics}
-\centering\footnotesize
-\begin{tabular}{l rrrrrrr}
-\hline
-University                 & \npup  & \nmaj &\nprof  &\ngrad &\ngrant& \nisi&\nscielo\\
-\hline\hline
-U. de Chile               & 30480 	& 77 &   2236.64&1499.84&855.5  &  2305&	279  \\
-P. U. Católica de Chile    & 26767 	& 76 &   2232.60&1508.94&763.0  &  2171&	237  \\
-U. de Concepción           & 24666 	& 90 &   1432.16&1129.67&388.0  &  1050&	121  \\
-U. Católica de Valparaíso  & 14121 	& 52 &    633.04& 518.95&209.0  &   545&	 69  \\
-U. Téc. Fedérico Sta. María& 15105 	& 77 &    677.03& 405.92&169.0  &   522&	  6  \\
-U. de Santiago             & 18645 	& 68 &   1122.57& 695.14&210.0  &   565&	 58  \\
-U. Austral                 & 13218 	& 60 &    911.62& 628.02&184.0  &   534&	 66  \\
-U. Católica del Norte      & 10407 	& 52 &    590.90& 362.66& 63.0  &   328&	 34  \\
-U. de Valparaíso           & 14737 	& 60 &    873.13& 557.72&120.0  &   409&	 42  \\
-U. de Antofagasta          &  6369 	& 56 &    399.75& 256.79& 39.0  &   207&	 11  \\
-U. de la Serena            &  7084 	& 41 &    370.42& 209.56& 28.0  &   165&	 14  \\
-U. de Bio Bio              & 11028 	& 62 &    498.67& 426.73& 66.0  &   198&	 26  \\
-U. de la Frontera          &  9346 	& 48 &    423.96& 300.01&160.0  &   450&	 40  \\
-U. de Magallanes           &  2962 	& 27 &    268.08& 129.13& 27.0  &   106&	 15  \\
-U. de Talca	               &  9342 	& 41 &    465.00& 427.80&124.0  &   312&	 43  \\
-U. de Atacama              &  6359 	& 71 &    317.73& 138.05&  5.0  &    78&	  3  \\
-U. de Tarapacá             &  8525 	& 63 &    358.23& 305.34& 36.0  &   248&	 32  \\
-U. Arturo Prat             &  4326 	& 39 &    441.08& 227.30& 16.0  &    52&	 18  \\
-U. Metropolitana           &  4548 	& 24 &    325.96& 212.83&  3.0  &    33&	  8  \\
-U. de Playa Ancha          &  7747 	& 52 &    421.98& 309.35& 30.0  &    65&	 18  \\
-U. Tecnológica Metropolitana& 7970 	& 36 &    297.30& 175.73& 13.0  &    61&	  5  \\
-U. de Los Lagos            &  4150 	& 43 &    430.32& 254.29& 36.0  &    97&	 11  \\
-U. Católica de Maule       &  6955 	& 28 &    405.88& 281.93& 22.0  &    95&	 24  \\
-U. Católica de Temuco      &  8404 	& 57 &    492.29& 340.62& 42.0  &   125&	 26  \\
-U. C.de la Sant.Concepción &  8844 	& 31 &    497.69& 285.65& 24.0  &   107&	 11  \\
-U. de O'Higgins	           &     0 	&  0 &	   34.86& 29.03 &  4.0  &    14&	  0  \\
-U. de Aysén                &	 0  &  0 & 	   15.35& 11.28 &  1.0  &    3 &      0  \\
-\hline
-\end{tabular}
-\end{table*}
-
-\begin{table*}
-\caption{Calculation details for the 5\% direct State funding (aporte fiscal 
-directo) of main Chilean Universities in 2018.}
+$\nscielo$, the number of non-ISI publications indexed by the Scientific
+Electronic Library Online Chile. Calculation details for the 5\% direct State 
+funding (aporte fiscal directo) include intermediate variables $x_i$ and $y_i$ for each metric, the percent share of the 5\% and the total amount.
+}
 \label{tab:calcdetail}
-\centering\footnotesize
-\begin{tabular}{l rrrrrrrrrr rr}
-\hline\hline
-University                  &$x_1$& $y_1$ &$x_2$ & $y_2$ & $x_3$ & $y_3$ & $x_4$ & $y_4$ & $x_5$ & $y_5$ &  (\%) & CLP\\
-\hline
-U. de Chile                 & 396 & 0.561 & 13.6 & 0.033 & 0.671 & 0.062 & 0.382 & 0.512 & 1.072 & 0.475 & 10.43 & 1\,220\,349\,000\\
-P. U. Católica de Chile     & 352 & 0.421 & 12.0 & 0.021 & 0.676 & 0.066 & 0.342 & 0.406 & 1.007 & 0.411 &  8.76 & 1\,025\,067\,000\\
-U. de Concepción            & 274 & 0.204 & 17.2 & 0.081 & 0.789 & 0.217 & 0.271 & 0.241 & 0.761 & 0.198 &  6.39 &    748\,010\,000\\
-U. Católica de Valparaíso   & 272 & 0.199 & 22.3 & 0.215 & 0.820 & 0.278 & 0.330 & 0.377 & 0.897 & 0.307 &  9.88 & 1\,155\,812\,000\\
-U. Téc. Fedérico Sta. María & 196 & 0.072 & 22.3 & 0.216 & 0.600 & 0.023 & 0.250 & 0.200 & 0.774 & 0.207 &  5.25 &    614\,754\,000\\
-U. de Santiago              & 274 & 0.205 & 16.6 & 0.071 & 0.619 & 0.030 & 0.187 & 0.105 & 0.520 & 0.072 &  2.32 &    271\,561\,000\\
-U. Austral                  & 220 & 0.103 & 14.5 & 0.042 & 0.689 & 0.078 & 0.202 & 0.124 & 0.610 & 0.109 &  3.09 &    362\,052\,000\\
-U. Católica del Norte       & 200 & 0.077 & 17.6 & 0.088 & 0.614 & 0.028 & 0.107 & 0.036 & 0.574 & 0.092 &  2.03 &    237\,356\,000\\
-U. de Valparaíso            & 246 & 0.145 & 16.9 & 0.075 & 0.639 & 0.040 & 0.137 & 0.056 & 0.484 & 0.060 &  1.87 &    218\,799\,000\\
-U. de Antofagasta           & 114 & 0.016 & 15.9 & 0.060 & 0.642 & 0.042 & 0.098 & 0.032 & 0.527 & 0.074 &  1.73 &    202\,772\,000\\
-U. de la Serena             & 173 & 0.049 & 19.1 & 0.121 & 0.566 & 0.013 & 0.076 & 0.022 & 0.458 & 0.052 &  1.49 &    173\,877\,000\\
-U. de Bio Bio               & 178 & 0.054 & 22.1 & 0.209 & 0.856 & 0.359 & 0.132 & 0.052 & 0.414 & 0.041 &  4.75 &    555\,201\,000\\
-U. de la Frontera           & 195 & 0.071 & 22.0 & 0.206 & 0.708 & 0.097 & 0.377 & 0.499 & 1.093 & 0.496 & 11.52 & 1\,348\,115\,000\\
-U. de Magallanes            & 110 & 0.015 & 11.0 & 0.016 & 0.482 & 0.003 & 0.101 & 0.033 & 0.414 & 0.041 &  0.84 &     97\,927\,000\\
-U. de Talca	                & 228 & 0.115 & 20.1 & 0.146 & 0.920 & 0.518 & 0.267 & 0.233 & 0.701 & 0.159 &  8.52 &    997\,062\,000\\
-U. de Atacama               &  90 & 0.009 & 20.0 & 0.144 & 0.434 & 0.001 & 0.016 & 0.008 & 0.249 & 0.015 &  0.95 &    110\,755\,000\\
-U. de Tarapacá              & 135 & 0.025 & 23.8 & 0.271 & 0.852 & 0.351 & 0.100 & 0.033 & 0.722 & 0.172 &  6.31 &    738\,384\,000\\
-U. Arturo Prat              & 111 & 0.015 &  9.8 & 0.010 & 0.515 & 0.005 & 0.036 & 0.011 & 0.131 & 0.006 &  0.26 &     30\,451\,000\\
-U. Metropolitana            & 190 & 0.065 & 14.0 & 0.036 & 0.653 & 0.049 & 0.009 & 0.007 & 0.109 & 0.005 &  0.70 &     81\,804\,000\\
-U. de Playa Ancha           & 149 & 0.032 & 18.4 & 0.104 & 0.733 & 0.128 & 0.071 & 0.021 & 0.168 & 0.008 &  1.78 &    208\,595\,000\\
-U. Tecnológica Metropolitana&221  & 0.105 & 26.8 & 0.400 & 0.591 & 0.020 & 0.044 & 0.013 & 0.211 & 0.011 &  2.38 &    278\,301\,000\\
-U. de Los Lagos             &  97 & 0.011 &  9.6 & 0.010 & 0.591 & 0.020 & 0.084 & 0.025 & 0.234 & 0.013 &  0.56 &     66\,056\,000\\
-U. Católica de Maule        & 248 & 0.151 & 17.1 & 0.080 & 0.695 & 0.083 & 0.054 & 0.016 & 0.254 & 0.015 &  1.39 &    162\,712\,000\\
-U. Católica de Temuco       & 147 & 0.031 & 17.1 & 0.078 & 0.692 & 0.081 & 0.085 & 0.026 & 0.271 & 0.017 &  1.43 &    167\,667\,000\\
-U. C.de la Sant.Concepción  & 285 & 0.231 & 17.8 & 0.092 & 0.574 & 0.015 & 0.048 & 0.014 & 0.222 & 0.012 &  0.89 &    104\,634\,000\\
-U. de O'Higgins	            &   0 & 0.001 &  0.0 & 0.000 & 0.833 & 0.307 & 0.115 & 0.041 & 0.402 & 0.038 &  3.17 &    370\,823\,000\\
-U. de Aysén                 &   0 & 0.001 &  0.0 & 0.000 & 0.735 & 0.130 & 0.065 & 0.019 & 0.195 & 0.010 &  1.29 &    150\,972\,000\\
-\hline
-\end{tabular}
-\end{table*}
+\setlength{\tabcolsep}{5pt}
+\def\arraystretch{1.5}
+\footnotesize
+\input tex/tab-calcdetail.tex
+\end{sidewaystable*}
 
-\begin{figure*}
-\includegraphics[width=\linewidth]{pdf/afd-coefficients-2018.jpg}
+\begin{figure*}[p]
+\centering
+\includegraphics[width=.9\linewidth]{pdf/afd-coefficients-2018.jpg}
 \caption{Graphical representation of the contributions of each AFD coefficient ($c_k y_k$) to each University's score.}
 \end{figure*}
 

@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+from matplotlib import pylab as plt
 from openpyxl import load_workbook
 from astropy.table import Table
 import numpy as np
@@ -89,14 +90,17 @@ def read_table(year, compute=False, fill_missing=False):
                 for c in re.split('\s+', uni)])
         uni = re.sub("O'h", "O'H", uni)
         row[0] = uni
-    if fill_missing and year <= 2017:
-        values.append(("U. de O'Higgins",) + (np.nan,) * 11)
-        values.append(("U. de Aysén",) + (np.nan,) * 11)
+        for j in range(1, 12):
+            row[j] = float(row[j])
     names = ['University', 'U', 'M', 'S', 'Sp', 'G', 'Pi', 'Ps', 'P', '%_AFD5%', 'AFD5%', 'AFD95%']
     tab = Table(rows=values, names=names)
     tab.remove_columns(['Pi', 'Ps'])
     if compute:
         compute_table(tab)
+    if fill_missing and year <= 2017:
+        nfields = len(tab.colnames) - 1
+        tab.add_row(("U. de O'Higgins",) + (np.nan,) * nfields)
+        tab.add_row(("U. de Aysén",) + (np.nan,) * nfields)
     tab.meta['year'] = year
     tab.meta['computed'] = bool(compute)
     return tab
@@ -466,7 +470,7 @@ def variation(tabs):
     fig.savefig('../pdf/total-afd-timeseries.pdf')
     return tab
 
-def collaboration(tab1, metric='P'):
+def collaboration(tab1, metric='P', print_=False):
     nuniv = len(tab1)
     M = np.zeros((nuniv, nuniv))
     if not tab1.meta['computed']:
@@ -475,15 +479,60 @@ def collaboration(tab1, metric='P'):
         u1 = tab1[i]['University']
         tab2 = change_metric(tab1, i, metric)
         df_i = (tab2[i]['f'] - tab1[i]['f'])
-        print(f"--- {u1} ({df_i:13.0f}) ---")
+        if print_:
+            print(f"--- {u1} ({df_i:13.0f}) ---")
         for j in range(nuniv):
             if i == j:
+                M[i, i] = df_i
                 continue
             u2 = tab1[j]['University']
             tab2 = change_metric(tab1, [i, j], metric)
             df_ij = (tab2[i]['f'] - tab1[i]['f']) 
-            print(f"{df_ij - df_i:13.0f} {df_ij:13.0f} {u2:30}")
-    return M
+            if print_:
+                print(f"{df_ij - df_i:13.0f} {df_ij:13.0f} {u2:30}")
+            M[i, j] = df_ij 
+    return tab1['University'], M
+
+def plot_collaboration(u, M, size=(7.5,7.5)):
+    order = np.argsort(M.diagonal())
+    n = len(order)
+    u = u[order]
+    M = M[order,:][:,order] 
+    min = np.minimum
+    fig = plt.figure(1, figsize=size)
+    fig.set_size_inches(*size)
+    fact = np.array([M[i,:] / M[i,i] for i in range(n)])
+    fig.clf()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.view_init(azim=-41, elev=53)
+    nu = np.arange(len(M))
+    x, y = nu, nu
+    x, y = np.meshgrid(x, y)
+    x, y = x.ravel(), y.ravel()
+    z = np.zeros_like(x)
+    dx, dy = 0.5, 0.5
+    dz = 32 * M.ravel() / 1e3
+    f = fact.ravel()
+    conditions = [f == 1, (f < 1) * (f > 0), f > 1, f < 0]
+    colors = np.full(np.shape(dz), 'green')
+    colors[f == 1] = 'blue'
+    colors[f < 1] = 'y'
+    colors[f < 0] = 'red'
+    ax.bar3d(x, y, z, dx, dy, min(60, dz), color=colors)
+    ax.set_zlim(0, 60)
+    ax.set_xlim(0, 32)
+    ax.set_ylim(-4, 27)
+    ax.set_axis_off()
+    ax.grid(False)
+    ax.text(28, 13.5, 0, 'PI', zdir='y', va='center_baseline', ha='center')
+    ax.text(13.5, -1, 0, 'CoI', zdir='x', va='center_baseline', ha='center')
+    for i, t in zip(nu, u):
+        ax.text(30, i, 0, t, zdir='x', va='center_baseline',fontsize=8)
+    for i, t in zip(nu, u):
+        ax.text(i, -3, 0, t, zdir='y', ha='right', va='center_baseline', fontsize=8)
+    fig.tight_layout()
+    fig.show()
+    return fig
 
 def science_incentives(tab, p=0.02, include_caption=False):   
     """Determine the marginal earnings for an additional paper, research
@@ -549,12 +598,61 @@ Side effects:
             out.write('\\end{table}')
     print(f'Incentives written into {filename}')
 
+def plot_arrow(ax, x, y, /, *, label=None):
+    color = ax.plot([x[0]], [y[0]], '-', label=label)[0].get_color()
+    #ax.arrow(x[-2], y[-2], x[-1] - x[-2], y[-1] - y[-2], color=color,
+    #    length_includes_head=True) # , head_width=0.1, overhang=0.5)
+    ax.annotate('', xytext=(x[0], y[0]), xy=(x[-1], y[-1]), 
+        arrowprops=dict(arrowstyle='->', color=color))
+
+def evolution(afd_tables, name):
+    universities = afd_tables[-1]['University']
+    colnames = afd_tables[-1].colnames
+    result = {u: 
+        {n: np.array([tab[j][n] for tab in afd_tables])
+            for n in colnames}
+                for j, u in enumerate(universities)} 
+    fig = plt.figure(1)
+    fig.clf()
+    ax11 = fig.add_subplot(223)
+    ax11.set_ylim(0, 0.99)
+    ax11.set_xlim(0, 34)
+    ax11.set_xlabel('undergrads per prof')
+    ax11.set_ylabel('PhD. prof fraction')
+
+    ax12 = fig.add_subplot(224)
+    ax12.set_yticks([])
+    ax12.set_xlabel('publications per prof')
+    ax12.set_ylim(0, 0.99)
+    ax12.set_xlim(0, 1.25)
+
+    ax21 = fig.add_subplot(221)
+    ax21.set_xticks([])
+    ax21.set_ylim(0, 1.25)
+    ax21.set_xlim(0, 34)
+    ax21.set_ylabel('publications per prof')
+
+    for univ in universities[:-2]:
+        rg = slice(None) # [-4,-3,-2,-1]
+        res = result[univ]
+        x1, x2, x3 = res['x2'], res['x3'] , res['x5']
+        plot_arrow(ax21, x1, x3)
+        plot_arrow(ax12, x3[rg], x2[rg])
+        plot_arrow(ax11, x1[rg], x2[rg], label=univ)
+    fig.legend(ncol=2, frameon=False, fontsize=6)
+    fig.tight_layout()
+    fig.subplots_adjust(wspace=0, hspace=0)
+    fig.show()
+    return result
+
+
 if __name__ == "__main__":
-    afd_tables = [read_table(y) for y in range(2006, 2021)]
-    afd_table = afd_tables[-1]
+    if 'init' in sys.argv:
+        afd_tables = [read_table(y) for y in range(2006, 2021)]
+        afd_table = afd_tables[-1]
     if 'science_incentives' in sys.argv or 'all' in sys.argv:
         science_incentives(afd_table, p=0.02)
     if 'trend' in sys.argv or 'all' in sys.argv:
         tab = variation(afd_tables)
     if 'collaboration' in sys.argv or 'all' in sys.argv:
-        tab = collaboration(afd_table)
+        ax, M = collaboration(afd_table)
