@@ -11,45 +11,72 @@ def scatter(tabs):
     fig.clf()
     ax = fig.add_subplot(111)
 
+    tab0 = tabs[0][:-2]
+    year0 = tab0.meta['year'] - 1
+    univ  = tab0['University']
+
+    # last 10 years
+    R = []
+    S = []
+    for tab in tabs[-8:]:
+        tab = tab[:-2]
+        year = tab.meta['year']
+        y = np.array([tab[f'F{i}'] for i in ['h', 1, 2, 3, 4, 5]])
+    
+        y_sum = y.sum(axis=0)
+        r = y[4:6].sum(axis=0) / y[1:6].sum(axis=0)
+        s = (19/20) ** (year - year0) - y[0] / y_sum
+        
+        R.append(r)
+        S.append(s)
+    
+    R = np.array(R)
+    S = np.array(S)
+
+    ax.plot(R, S, color=(.5,.5,.5), ls='-')
+
+    # 2021 snapshot
+
+    tab = tabs[-1]
+    year = tab.meta['year']
     tab = tab[:-2]
     
     univ = tab['University']
     nuniv = len(tab)
 
-    # 2021 snapshot
-
     y = np.array([tab[f'F{i}'] for i in ['h', 1, 2, 3, 4, 5]])
-    y_old = y[0] / 1e6 
     
-    y_sum = y.sum(axis=0)
-    y_science = y[4:6].sum(axis=0) / y[1:6].sum(axis=0)
-    y_new = (y_sum - y[0]) / y_sum
-   
-    y_science_mean = np.median(y_science) #  y[4:6].sum() / y[1:6].sum()
-    y_new_mean = 1 - 0.95 ** (2021-2005) # y[0].sum() / y.sum()
-
-    ax.vlines(y_science_mean, 0, 0.32, 'k', '--')
-    ax.vlines(y_science_mean, 0.50, 1, 'k', '--')
-    ax.hlines(y_new_mean, 0, 1, 'k', '--')
+    #y_sum = y.sum(axis=0)
+    #R = y[4:6].sum(axis=0) / y[1:6].sum(axis=0)
+    #S = (19/20) ** (year - year0) - y[0] / y_sum
+    R = R[-1]
+    S = S[-1]  
  
-    ax.scatter(y_science, y_new, c=[(.5,.5,.5)], 
+    R_mean = np.median(R) #  y[4:6].sum() / y[1:6].sum()
+    S_mean = 0
+
+    ax.vlines(R_mean, -0.5, -0.24, 'k', '--')
+    ax.vlines(R_mean, -0.05,  0.5, 'k', '--')
+    ax.hlines(S_mean, 0, 1, 'k', '--')
+ 
+    ax.scatter(R, S, c=[(.5,.5,.5)], 
             s=120*np.sqrt(y_sum/y_sum.max()), edgecolor='k')    
-    ax.set_xlabel('teaching $\\rightarrow$ science specialisation --- $\\mathcal{S}_{i} / (\\mathcal{S}_{i} + \\mathcal{T}_{i})$')
+    ax.set_xlabel('teaching $\\rightarrow$ science specialisation --- $\\mathcal{R}_{i,n}$')
     ax.set_xlim(0, 1)
 
-    ax.set_ylabel('established $\\rightarrow$ surging --- $1 - \\mathcal{H}_{i} / F_i$')
-    ax.set_ylim(0, 1)
+    ax.set_ylabel('established $\\rightarrow$ surging --- $\\mathcal{S}_{i,n}$')
+    ax.set_ylim(-0.5, 0.5)
 
-    for ys, yn, un in zip(y_science, y_new, univ):
-        if un in ['U. de la Frontera', 'U. de Magallanes', 'U. de Concepción',
+    for r, s, un in zip(R, S, univ):
+        if un in ['U. de Magallanes', 'U. de Concepción',
                 'U. de Antofagasta']:
-            ax.text(ys - 0., yn - 0.02, un, fontsize=10, rotation=-70,
+            ax.text(r - 0., s - 0.02, un, fontsize=10, rotation=-70,
                 va='top', ha='left')
-        elif yn < 0.55:
-            ax.text(ys - 0.015, yn - 0.02, un, fontsize=10, rotation=-90,
+        elif s < 0. or r > 0.7:
+            ax.text(r - 0.015, s - 0.02, un, fontsize=10, rotation=-90,
                 va='top', ha='left')
         else:
-            ax.text(ys - 0.01, yn + 0.02, un, fontsize=10, rotation=-90,
+            ax.text(r - 0.01, s + 0.02, un, fontsize=10, rotation=-90,
                 va='bottom', ha='left')
     
     fig.tight_layout()
@@ -145,7 +172,7 @@ def plot_afd5(tab):
     
     fig.savefig('../pdf/afd-coefficients.pdf')
 
-tab = afdtable.read_all_years()[-1]
-scatter(tab)
-plot_afd5(tab)
+tabs = afdtable.read_all_years()
+scatter(tabs)
+plot_afd5(tabs[-1])
 

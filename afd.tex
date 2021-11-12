@@ -23,6 +23,7 @@
 \def\der#1#2{\frac{\mathrm{d}\,{#1}}{\mathrm{d}#2}}
 \def\pder#1#2{\frac{\partial\,{#1}}{\partial#2}}
 
+\def\Fnew{\ensuremath{F^\text{new}}}
 \def\nal{\ensuremath{N_\text{pub}}}
 \def\nal{\ensuremath{N_\text{alumnos}}}
 \def\nal{\ensuremath{N_\text{alumnos}}}
@@ -185,27 +186,38 @@ on metrics $y_{i,n,k}$ and 95\% of the funding is related to the previous year's
 share of the total funding.  So,
 
 \begin{align}
-    F_{i,n+1} &= \frac{19}{20} \frac{F_{i,n}}{F_{n}} (F_{n+1} - F_{n+1}^\text{new})
-               + \frac 1{20} \frac{y_{i,n}}{y_n} F_{n+1}.
+    F_{i,n+1} &= \frac{19F_{i,n}}{20F_{n}}\left(F_{n+1} - \Fnew_{n+1}\right)
+               + \frac{y_{i,n}}{20y_n} F_{n+1}.
         \label{eq:afd}
 \end{align}
 where $F_{n+1}^\text{new}$ is the part of the 95\% apportionned to newly admitted traditional universities.  In the period 2006--2021, it has been nonzero in 2018 when State Universities of O'Higgins and Aysén where included (Decree 228 of 2017).  
 
-\paragraph{Science, teaching, and historic funding.}  For an analysis of the strengths and weaknesses of Universities, it is useful to determine what part of the total AFD funding originates from each of the metrics in years 2005--2020 and from the pre-2006 one.  Let $\mathcal{H}_{i,n}$ be the share of ``historic'' funding of university $i$ in year $n$ that originates from the pre-2006 AFD funding and $F_{i,n,k}$ that of the metric number $k$ in all years from 2005 to $k-1$. They can be determined via the initial conditions and inductions:
+\paragraph{Funding by metric.}  For an analysis of the strengths and weaknesses of each Universities, it is useful to determine what part of the total AFD funding originates from ``historic'' funding at year $n_0$ and which parts originate from each of the metrics computed for the funding of years $n_0 + 1$ to $n$. Let $H_{i,n}$ be the share of ``historic'' funding of university $i$ in year $n$ and $F_{i,n,k}$ that of the metric number $k$. They can be determined via the initial conditions and recurrence relations:
 \begin{align}
-  \mathcal{H}_{i,2005}    &= F_{i,2005},\\
-  F_{i,2005,k}  &= 0,\\
-  \mathcal{H}_{i,n + 1}   &= \frac{19\mathcal{H}_{i,n}}{20F_n} 
-                              \left( F_{n+1} - F_{n+1}^\text{new} \right),\\
-  F_{i,n + 1,k} &= \frac{19 F_{i,n,k} }{20F_n}
-                              \left( F_{n+1} - F_{n+1}^\text{new} \right)
-                  + \frac{c_k y_{i,n,k}}{20y_n} F_{n+1},
+  H_{i, n_0}  &= F_{i, n_0},\\
+  H_{i,n+1}   &= \frac{19H_{i,n}}{20F_n}   \left(F_{n+1}-\Fnew_{n+1}\right),
+                    \label{eq:recH}\\
+  F_{i,n_0,k} &= 0,\\
+  F_{i,n+1,k} &= \frac{19F_{i,n,k}}{20F_n} \left(F_{n+1} - \Fnew_{n+1}\right)
+                  + \frac{c_k y_{i,n,k}}{20y_n} F_{n+1}
+                    \label{eq:recF}\\
+              &\qquad\qquad \text{for $1 \le k \le 5$}. \notag
 \end{align}
-It is straighforward to check that $F_{i,n} = H_{i,n} + \sum_k F_{i,n,k}$ since the six induction equations sum to Eq.~(\ref{eq:afd}). In addition, I introduce the science-related and teaching-related fundings
-\begin{align}
-    \mathcal{S}_{i,n} &= F_{i,n,4} + F_{i,n,5},\\
-    \mathcal{T}_{i,n} &= F_{i,n,1} + F_{i,n,2} + F_{i,n,3}.
-\end{align} 
+It is straighforward to check that $F_{i,n} = H_{i,n} + \sum_k F_{i,n,k}$ since the six recurrence equations (Eqs.~\ref{eq:recH}~\& \ref{eq:recF}) sum to Eq.~(\ref{eq:afd}). 
+
+In steady state---ignoring the small non-zero values for $\Fnew$ in 2018---we expect that the historic to total funding ratio decreases by 5\% each year from a value of 1 in year $n_0$. I define the surging index as
+\begin{equation}
+    \mathcal{S}_{i,n} = \left(\frac{19}{20}\right)^{n-n_0}
+                             - \frac{H_{i,n}}{F_{i, n}}
+\end{equation}
+with positive values for surging Universities boasting better metrics in the recent years than in the past.
+
+I also define the research index as the ratio of funding obtained for scientific activities (metrics 4 \& 5: number of grants and papers) to the funding received for all metrics.
+\begin{equation}
+    \mathcal{R}_{i,n} = \frac {F_{i,n,4} + F_{i,n,5}}
+                            {F_{i,n} - H_{i,n}}.
+\end{equation}
+A value of 1 denotes a research institution while a value of 0 a university only dedicated to teaching.
 
 \subsection{Checks}
 \begin{figure}
@@ -392,7 +404,7 @@ The Chilean consumer price index narrowly followed by the unidad de fomento (UF)
 \begin{figure*}[p]
 \centering
 \includegraphics{pdf/afd-specialisation.pdf}
-\caption{Classification of traditional universities according to their teaching v. science specialisation and their established v. surging status. The two newly created institutions have not been included. \textit{Circles:} area is proportional to the total AFD funding received in 2021. \textit{Horizontal axis:} ratio of funding originating from the 2005--2020 science metrics (number of grants and papers) to the one from all 2005--2020 metrics. The vertical line indicates the median value. \textit{Vertical axis:} ratio of funding originated from 2005--2020 metrics to total funding.  A value of 0 means all funding arises from pre-2006 funding and 1 that the university receives all of in virtue of its recent metrics. The horizontal is the ratio expected in steady state (0.56), since pre-2006 funding is expected to have decayed to $0.95^{2021-2005} = 0.44$. (It is by definition very close to the weighted mean of the data.)}
+\caption{Classification of traditional universities according to their teaching v. science specialisation and their established v. surging status. The two newly created institutions have not been included. \textit{Circles:} 2021 standing, area is proportional to the total AFD funding received in 2021. \textit{Gray tracks:} evolution of the universities through years 2014--2021. \textit{Horizontal axis:} research index, i.e. ratio of funding originating from the 2005--2020 science metrics (number of grants and papers) to the one from all 2005--2020 metrics. The vertical line indicates the median value. \textit{Vertical axis:} surging index, i.e. ratio of funding obtained from recent metrics to total funding minus its expected steady state value.  }
 \end{figure*}
 
 
