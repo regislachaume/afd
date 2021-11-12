@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 
 from matplotlib import pylab as plt
-from openpyxl import load_workbook
 from astropy.table import Table
 import numpy as np
 import scipy as sp
@@ -11,163 +10,7 @@ import matplotlib as mpl
 import re
 import sys
 
-class AFD:
-
-    c = np.array([0.01, 0.15, 0.24, 0.25, 0.35])
-    metrics = np.array(['U', 'M', 'S', 'Sp', 'G', 'P'])
-
-    def __init__(self, start = 2006, end = 2020):
-        self.years = np.arange(start, end + 1)
-        self.nyear = len(self.years)
-        self.nuniv = 27
-        cols = self.metrics.tolist() + ['AFD5%', 'AFD95%']
-        self.nmetrics = len(self.metrics)
-        data = np.ma.masked_invalid([read_table(y, compute=False, fill_missing=True)[cols].as_array().tolist() for y in self.years])
-        data = np.ma.masked_invalid(data)
-        self.afd05 = data[-2].sum(axis=-1)
-        self.afd95 = data[-1].sum(axis=-1)
-        self._compute()
-
-    def _compute_x(self):
-        data = self.data
-        self.x = data[...,[0,0,3,4,5]] / np.maximum(1e-3, data[...,[1,2,2,2,2]])
-
-    def _compute_xi(self):
-        x = self.x
-        mean = x.mean(axis=1)[:,None,:]
-        std = x.std(axis=1, ddof=0)[:,None,:]
-        self.xi = (x - mean) / std 
-        self.xi.fill_value = np.log(1e+20)
-
-    def _compute_y(self):
-        self.y = np.exp((self.xi / 4 - 7/5) ** 3) 
-
-    def _compute_p(self):
-        ysum = np.sum(self.y * self.c, axis=-1)
-        ytot = ysum.sum(axis=-1)
-        self.p = y / ytot[:,None,None]
-        self.psum = ysum / ytot[:,None]
-
-    def _compute_afd(self):
-        this = self.years - self.start
-        ref = this - (self.years == 2010) 
-        self.data[this,:,6] = self.psum[:,ref] * self.afd05[this,None]
-        for i, j in zip(this[1:], ref[:-1]):
-            ref_funding = self.afd95[j] + self.afd05[j]
-            ref_p = self.data[j,:,6:8].sum(axis=1) / ref_funding
-            self.data[i,:,7] = self.afd95[i] * ref_p
-
-    def _compute(self, exclude=None):
-        if exclude not in ['x', 'xi', 'y']:
-            self._compute_x()
-        if exclude not in ['xi', 'y']:
-            self._compute_xi()
-        if exclude not in ['y']:
-            self._compute_y()
-        self._compute_p()
-        self._compute_afd()
-
-    def change_metric(self, metric, years, values, unit='number'):
-        im = np.argwhere(self.metric == metric)[0,0] 
-        iy = np.argwhere(years, values)
-            
-
-def read_table(year, compute=False, fill_missing=False):
-    book = load_workbook('../src/tabla-afd.xlsx', read_only=True)
-    sheet = book[book.sheetnames[0]]
-    nuniv = 25 + 2 * (year >= 2018)
-    first = 15 + 35 * (2020 - year)
-    last = first + nuniv - 1
-    area = 'A{}:L{}'.format(first, last)
-    values = [list(c.value for c in r) for r in sheet[area]]
-    short = ['de', 'del', 'la', 'el', 'las', 'los']
-    for i, row in enumerate(values):
-        uni = row[0]
-        uni = re.sub('\.(?=\S)', '. ', uni)
-        uni = re.sub('Maria', 'María', uni)
-        uni = re.sub('Bio Bio', 'Bío-Bío', uni)
-        uni = ' '.join([c.capitalize() if c not in short else c 
-                for c in re.split('\s+', uni)])
-        uni = re.sub("O'h", "O'H", uni)
-        row[0] = uni
-        for j in range(1, 12):
-            row[j] = float(row[j])
-    names = ['University', 'U', 'M', 'S', 'Sp', 'G', 'Pi', 'Ps', 'P', '%_AFD5%', 'AFD5%', 'AFD95%']
-    tab = Table(rows=values, names=names)
-    tab.remove_columns(['Pi', 'Ps'])
-    if compute:
-        compute_table(tab)
-    if fill_missing and year <= 2017:
-        nfields = len(tab.colnames) - 1
-        tab.add_row(("U. de O'Higgins",) + (np.nan,) * nfields)
-        tab.add_row(("U. de Aysén",) + (np.nan,) * nfields)
-    tab.meta['year'] = year
-    tab.meta['computed'] = bool(compute)
-    return tab
-
-def set_column_group(tab, x, name):
-    for k, xk in enumerate(x):
-        colname = '{}{}'.format(name, 1 + k)
-        if colname in tab.colnames:
-            tab[colname] = xk
-        else:
-            tab.add_column(xk, name=colname)
-   
-def set_column(tab, x, name):
-    if name in tab.colnames:
-        tab[name] = x
-    else:
-        tab.add_column(x, name=name)
- 
-def compute_table(tab, skip=None):
-    c = [0.01, 0.15, 0.24, 0.25, 0.35]
-    if skip is None or 'x' not in skip:
-        x = [tab['U'] / np.maximum(1, tab['M']),
-             tab['U'] / tab['S'],
-             tab['Sp'] / tab['S'],
-             tab['G'] / tab['S'],
-             tab['P'] / tab['S']]
-        set_column_group(tab, x, 'x')
-    else:
-        x = [tab[n] for n in ['x1','x2','x3','x4','x5']]
-    if skip is None or 'xi' not in skip:
-        xi = [(xk - xk.mean())/ xk.std(ddof=0) for xk in x]
-        set_column_group(tab, xi, 'xi')
-    else:
-        xi = [tab[n] for n in ['xi1','xi2','xi3','xi4','xi5']]
-    y = [np.exp((xik / 4 - 7/5) ** 3) for xik in xi]
-    set_column_group(tab, y, 'y')
-    ytot = sum(ck * sum(yk) for ck, yk in zip(c, y))
-    p = [ck * yk / ytot for ck, yk in zip(y, c)]
-    set_column_group(tab, p, 'p')
-    set_column(tab, sum(pk for pk in p), name='p')
-    afd5 = np.sum(tab['AFD5%'])
-    f = [pk * afd5 for pk in p]
-    set_column_group(tab, f, 'f')
-    set_column(tab, np.round(tab['p'] * afd5), name='f')
-    tab.meta['computed'] = True
-
-def change_metric(tab, univ, name, increment=1, unit='number'):
-    tab = tab.copy()
-    univ = np.atleast_1d(univ)
-    for univ in univ:
-        if unit == 'stdev':
-            s = tab[univ]['S']
-            if name == 'P':
-                tab[univ]['P'] += tab['x5'].std(ddof=0) * increment * s 
-            elif name == 'G':
-                tab[univ]['G'] += tab['x4'].std(ddof=0) * increment * s
-            elif name == 'Sp':
-                tab[univ]['Sp'] += tab['x3'].std(ddof=0) * increment * s
-            elif name == 'U':
-                tab[univ]['U'] += tab['x2'].std(ddof=0) * increment * s
-            else:
-                raise NotImplementedError('not doable actually')
-        else:
-            tab[univ][name] += increment
-    # recompute table
-    compute_table(tab)
-    return tab
+from afdtable import read as read_table, compute as compute_table
 
 def marginal_earning(tab, univ, metric, unit=None):
     tab1 = change_metric(tab, univ, metric, unit=unit)
@@ -405,71 +248,6 @@ def cumulated(univ=[[0, 1],[2,3]], start=2006, metric='Sp', ny=30, p=1.00,
 #cumulated(metric='Sp',start=2006,univ=[[0, 1],[2, 3]],ny=30, name='staff.pdf')
 #cumulated(metric='G',start=2016,univ=[[0,1],[2,3]],ny=3, name='postdoc.pdf')
 
-def variation(tabs):
-    years = np.array([tab.meta['year'] for tab in tabs])
-    names = tabs[0].colnames[1:]
-    rows = [(str(tab.meta['year']),) + tuple(float(sum(tab[name])) for name in names) 
-                for tab in tabs]
-    tab = Table(rows=rows, names=['year', *names])
-    tab.remove_column('%_AFD5%')
-    tab.add_column(tab['AFD5%'] +  tab['AFD95%'], name='AFD')
-    uf = Table.read('../src/macro.tsv', format='ascii.basic')
-    growth = uf['growth'][:-1]
-    ir_growth = uf['IR'][:-1]
-    tab.add_column(uf['UF'], name='UF')
-    tab.add_column(tab['AFD'] * (tab['UF'][-1] / tab['UF']), name='AFD_real')
-    first, last = tab[0], tab[-1]
-    ny = int(last['year']) - int(first['year'])
-    increase = [(last[n] / first[n])**(1/ny) - 1 for n in tab.colnames[1:]]
-    row = ('increase', *increase)
-    tab.add_row(row)
-    mean_growth = np.exp(np.mean([np.log(1+g/100) for g in growth])) - 1
-    mean_ir_growth = np.exp(np.mean([np.log(1+g/100) for g in ir_growth])) - 1
-    f = (1 + growth/100)
-    ir_f = (1 + ir_growth/100)
-    gdp = (1/f[::-1]).cumprod()[::-1].tolist()
-    gdp += [1, mean_growth]
-    ir = (1/ir_f[::-1]).cumprod()[::-1].tolist()
-    ir += [1, mean_ir_growth]
-    tab.add_column(gdp, name='GDP_percapita')
-    tab.add_column(ir, name='IR_real')
-    fig = pl.figure(1)
-    fig.clf()
-    ax = fig.add_subplot(111)
-    ax2 = ax.twinx()
-    grey = (.4,.4,.7)
-    line2 = ax2.plot(years, tab['GDP_percapita'][:-1],
-            color=grey, linestyle='-.',
-            label=f"GDP per cápita ({mean_growth:+.1%})")
-    line3 = ax2.plot(years, tab['IR_real'][:-1], 
-            color=grey, linestyle=':',
-            label=f"mean real wage ({mean_ir_growth:+.1%})")
-    line4 = ax2.plot(years-1, tab['U'][:-1] / tab['U'][-2], 
-            color=grey, linestyle='--',
-            label=f"undergraduates ({tab['U'][-1]:+.1%})")
-    line5 = ax2.plot(years-1, tab['S'][:-1] / tab['S'][-2], 
-            color=grey, dashes=[5,2,2,2,2,2],
-            label=f"professors ({tab['S'][-1]:+.1%})")
-    ax2.set_ylim(0, ax2.get_ylim()[1])
-    ax2.set_ylabel('relative value')
-    ax2.spines['right'].set_color(grey) 
-    ax2.tick_params(axis='y', color=grey)
-    ax2.yaxis.label.set_color(grey)
-    for label in ax2.get_yticklabels():
-        label.set_color(grey)
-    line1 = ax.plot(years, tab['AFD_real'][:-1] / 1e6, 'k-', 
-            label=f"AFD ({tab['AFD_real'][-1]:+.1%})")
-    ax.set_ylabel('billions 2020 Chilean pesos [10⁹ CLP]')
-    ax.set_ylim(0, ax.get_ylim()[1])
-    
-    lines = line1 + line2 + line3 + line4 + line5
-    labels = [l.get_label() for l in lines]
-    ax.legend(lines, labels)
-    fig.tight_layout()
-    fig.show()
-    fig.savefig('../pdf/total-afd-timeseries.pdf')
-    return tab
-
 def collaboration(tab1, metric='P', print_=False):
     nuniv = len(tab1)
     M = np.zeros((nuniv, nuniv))
@@ -647,12 +425,13 @@ def evolution(afd_tables, name):
 
 
 if __name__ == "__main__":
-    if 'init' in sys.argv:
-        afd_tables = [read_table(y) for y in range(2006, 2021)]
-        afd_table = afd_tables[-1]
-    if 'science_incentives' in sys.argv or 'all' in sys.argv:
-        science_incentives(afd_table, p=0.02)
-    if 'trend' in sys.argv or 'all' in sys.argv:
-        tab = variation(afd_tables)
-    if 'collaboration' in sys.argv or 'all' in sys.argv:
-        ax, M = collaboration(afd_table)
+    pass
+    #if 'init' in sys.argv:
+    #    afd_tables = [read_table(y) for y in range(2006, 2022)]
+    #    afd_table = afd_tables[-1]
+    #if 'science_incentives' in sys.argv or 'all' in sys.argv:
+    #    science_incentives(afd_table, p=0.02)
+    #if 'trend' in sys.argv or 'all' in sys.argv:
+    #    tab = variation(afd_tables)
+    #if 'collaboration' in sys.argv or 'all' in sys.argv:
+    #    ax, M = collaboration(afd_table)

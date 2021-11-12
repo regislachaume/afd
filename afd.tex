@@ -46,7 +46,7 @@
 \subsubsection{Determination}
 \label{sec:metrics}
 
-Art. 2 of Decree with Force of Law 4 of 1980, with modifications from Art. 1 of Ministry of Education Decree 116 of 2002, indicates that 5\% part of the total funding of year $n + 1$ is distributed to University $i$ according to its metrics measured in year $n$. They involve 
+Art. 2 of Decree with Force of Law 4 of 1980, with modifications from Art. 1 of Ministry of Education Decree 116 of 2002, indicates that 5\% part of the total funding of year $n + 1$ is distributed to University $i$ according to its metrics reported after year $n$\footnote{Some are from year $n$ and others from year $n-1$.}. They involve 
 \begin{itemize}
 \item $\npup_{i,n}$, the number of undergraduate students (``estudiantes de pregrado'');
 \item $\nmaj_{i,n}$, the number of majors (``carreras'');
@@ -60,7 +60,7 @@ Art. 2 of Decree with Force of Law 4 of 1980, with modifications from Art. 1 of 
 The metrics, defined in the aformentioned decrees, are ratios meant to measure an output v. staff efficiency\footnote{While the number of publications is defined by the number of WoS plublications plus one third of Scielo one by Ministry of Education Decree 116 of 2002, the Ministry has consistently used factor 0.33 instead of 1/3 for the calculation.}
 \begin{subequations}
 \begin{align}
-    x_{i,n,1} &= \npup_{i,n} / \nmaj_{i,n},  \label{eq:x1}                          \\
+    x_{i,n,1} &= \npup_{i,n} / \nmaj_{i,n},  \label{eq:x1}             \\
     x_{i,n,2} &= \npup_{i,n} / \nprof_{i,n},                           \\ 
     x_{i,n,3} &= \ngrad_{i,n} / \nprof_{i,n},                          \\
     x_{i,n,4} &= \ngrant_{i,n} / \nprof_{i,n},                         \\
@@ -121,7 +121,7 @@ is thus assigned a score
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{pdf/total-afd-timeseries.pdf}
-\caption{Evolution of total direct State funding to traditional Chilean Universities, in 2020 pesos (inflation-corrected) compared to the evolution of the GDP per capita (World Bank data), the mean real wage (Instituto Nacional de Estadísticas data) the number of undergraduate students and the number of professors.}
+\caption{Evolution of total direct State funding to traditional Chilean Universities, in 2020 pesos (inflation-corrected) compared to the evolution of the GDP per capita (World Bank data), the mean real wage (Instituto Nacional de Estadísticas data), the number of undergraduate students and the number of professors.}
 \label{fig:total-afd}
 \end{figure}
 
@@ -148,7 +148,7 @@ where $\delta_{ij} = 1$ if universities $i$ and $j$ are the same and zero otherw
 The meaning of \eqref{modif} is the following:
 \begin{enumerate}
     \item \emph{$(\xi_{j,k}/4 - 7/5)^2$ factor}:  The relative improvement depends on the relative standing of the University in the ranking.  A university lagging behind by 2 standards deviations gets a relative improvement 4,5 times higher than a university standing out by 2 standard deviations.
-    \item \emph{$\delta_{ij}$ term:} University $i$ generally benefits from an increase of its own ratio $\Delta x_{i,k}$: the $\delta_{ij}$ (= 1 for $i = j$) term in the equation is the only one that is not in $1/N$. However, if $|\xi_{i,k}| > \sqrt{N - 1} \approx 5$ standard deviations, University could lose from improving.  Nevertheless, the data of the Ministery from 2006 to 2020 can be used to show that the highest deviation any of the ratio has ever reached is 3.7.
+    \item \emph{$\delta_{ij}$ term:} University $i$ generally benefits from an increase of its own ratio $\Delta x_{i,k}$: the $\delta_{ij}$ (= 1 for $i = j$) term in the equation is the only one that is not in $1/N$ and thus dominates. However, if $|\xi_{i,k}| > \sqrt{N - 1} \approx 5$ standard deviations, University would lose from improving.  Nevertheless, the data of the Ministery from 2006 to 2020 can be used to show that the highest deviation any of the ratio has ever reached is 3.7.
     \item University $j$ may benefit from, or be harmed by, the improvement of University $i$.  There are two effects at play.  
     \begin{enumerate}
     \item \emph{$1/N$ term}: The increase of the mean, would on its own hurt all other universities as their position relative to the mean $\xi_{j,k}$ would drop (see the $1/N$ term in the equation).  
@@ -168,28 +168,44 @@ To determine the additional funding fraction $\Delta f_j$, let's propagate
 The first term in the square brackets has the same sign as $\Delta y_{j,k}$ because, by definition, $y_j < y$.  In most cases, the second term is smaller than the first one because the $\Delta y_{l,k}$ partially cancel out (some positives and some negatives) and $y_l < y$. It means that the funding received by a university that has an improved rating normally receives additional funding.  It is possible, though, that a university with a very small $\Delta y_{j,k}$ (e.g. $\xi_{j,k} < -2$) will be harmed by increasing its score, because the other, larger, $\Delta y_{l,k}$ coould lead to a second term larger than the first term under these circumstances.  In years 2006--2019 it has ocurred once, very marginally, in 2015, for Universidad de Talca.  It would have received 1,000 CLP less had it substituted four regular professors with ones owning a postgraduate degree (improvement of $y_{\text{U. Talca}, 2015, 3}$).  It happened on that year that Universidad de Talca had the highest negative standard deviation observed for any metrics in the period 2006--2019 ($\xi \approx -2.8$). 
 
 \subsection{Time evolution}
-\paragraph{Total funding}
-The total funding in year $n$, $F_{n}$, is a slowly increasing series (see Fig.~\ref{fig:total-afd}). In half of the years it approximately follows the consumer price index, but it has received a modest boost in other years.  The average inflation-corrected increase has been $2.0$\% per year in period 2006--2020. This increases matches the increase in undergraduate students ($+2.9\%$ in 2005--2019), professors ($+2.8\%$ in 2005-2019), real wages ($+2,5\%$ in 2006-2019), and GDP per capita ($+2.1$\% in 2006-2019). Table~\ref{tab:macro} in Appendix~\ref{sec:macro} gives an overview of the main macroeconomic quantities in this period. 
 
-Increase in standard of living and student population are long-term trends that I would expect to hold for at least the next decade, so I assume that University funding by the State will still follow this trend. For predictions, beyond 2020, I will therefore take
+\paragraph{Total funding.}
+The total funding in year $n$, $F_{n}$, is a slowly increasing series (see Fig.~\ref{fig:total-afd}). In half of the years it approximately follows the consumer price index, but it has received a modest boost in other years.  The average inflation-corrected increase has been $1.8$\% per year in period 2006--2021. This increases matches the increase in undergraduate students ($+2.8\%$ in 2004--2019), professors ($+2.6\%$ in 2005--2020), real wages ($+2.1\%$ in 2006--2021), and GDP per capita ($+1.6$\% in 2006--2021). Table~\ref{tab:macro} in Appendix~\ref{sec:macro} gives an overview of the main macroeconomic quantities in this period. Note that the pre-pandemic trends for macroeconomic data and AFD evolution were about 0.2\% higher. 
+ 
+Increase in standard of living and student population are long-term trends that I would expect to hold for at least the next decade, so I assume that University funding by the State will still follow this trend. For predictions, beyond 2021, I will therefore take
 \begin{equation}
-    F_{n+1} = F_n (1 + q), \label{eq:F}
+    F_{n+1} = (1+q) F_n, \label{eq:F}
 \end{equation}
 where $q = 2$\%.
 
-\paragraph{University funding}
+\paragraph{University funding.}
 Let $F_{i,n}$ be the funding received by university $i$ at year $n$. Art. 2 of
 Decree with Force of Law 4 of 1980 indicates that 5\% of the funding is indexed
 on metrics $y_{i,n,k}$ and 95\% of the funding is related to the previous year's
 share of the total funding.  So,
 
 \begin{align}
-    F_{i,n+1} &= \left( \frac{19}{20} \frac{F_{i,n}}{F_{n}} 
-                      + \frac 1{20} \frac{y_{i,n}}{\sum_j y_{j,n}} 
-                \right) F_{n+1}.
+    F_{i,n+1} &= \frac{19}{20} \frac{F_{i,n}}{F_{n}} (F_{n+1} - F_{n+1}^\text{new})
+               + \frac 1{20} \frac{y_{i,n}}{y_n} F_{n+1}.
         \label{eq:afd}
 \end{align}
+where $F_{n+1}^\text{new}$ is the part of the 95\% apportionned to newly admitted traditional universities.  In the period 2006--2021, it has been nonzero in 2018 when State Universities of O'Higgins and Aysén where included (Decree 228 of 2017).  
 
+\paragraph{Science, teaching, and historic funding.}  For an analysis of the strengths and weaknesses of Universities, it is useful to determine what part of the total AFD funding originates from each of the metrics in years 2005--2020 and from the pre-2006 one.  Let $\mathcal{H}_{i,n}$ be the share of ``historic'' funding of university $i$ in year $n$ that originates from the pre-2006 AFD funding and $F_{i,n,k}$ that of the metric number $k$ in all years from 2005 to $k-1$. They can be determined via the initial conditions and inductions:
+\begin{align}
+  \mathcal{H}_{i,2005}    &= F_{i,2005},\\
+  F_{i,2005,k}  &= 0,\\
+  \mathcal{H}_{i,n + 1}   &= \frac{19\mathcal{H}_{i,n}}{20F_n} 
+                              \left( F_{n+1} - F_{n+1}^\text{new} \right),\\
+  F_{i,n + 1,k} &= \frac{19 F_{i,n,k} }{20F_n}
+                              \left( F_{n+1} - F_{n+1}^\text{new} \right)
+                  + \frac{c_k y_{i,n,k}}{20y_n} F_{n+1},
+\end{align}
+It is straighforward to check that $F_{i,n} = H_{i,n} + \sum_k F_{i,n,k}$ since the six induction equations sum to Eq.~(\ref{eq:afd}). In addition, I introduce the science-related and teaching-related fundings
+\begin{align}
+    \mathcal{S}_{i,n} &= F_{i,n,4} + F_{i,n,5},\\
+    \mathcal{T}_{i,n} &= F_{i,n,1} + F_{i,n,2} + F_{i,n,3}.
+\end{align} 
 
 \subsection{Checks}
 \begin{figure}
@@ -200,19 +216,13 @@ $\sum_k c_{i,n,k} y_{i,n,k}$ is performed to determine the rating of university 
 \label{fig:transform}
 \end{figure}
 
-\paragraph{Yearly evaluation} I have checked the calculations of the 5\% using open data from the Eduction Ministry for
-years 2006 to 2020. For each year since 2011 and 2007--2009, the percentages I
-derived (see Table~\ref{tab:calcdetail} for 2018) match within numerical
-rounding errors (8 digits) with those of the Ministry. The subsidies I predict
-for each university differ by at most CLP 1,000 (USD 1.50) with the
-official ones due to rounding errors, as the accounting unit used in the
+\paragraph{Yearly evaluation} I have checked the calculations of the 5\% using open data from the Eduction Ministry for years 2006 to 2021. For each year since 2011 and 2007--2009, the percentages I
+derived match within numerical rounding errors (8 digits) with those of the Ministry. The subsidies I predict for each university differ by at most CLP 1,000 ($\approx 1.20$~USD as of November 2021) with the official ones due to rounding errors, as the accounting unit used in the
 official documents is 1,000 Chilean pesos. In 2010, the Ministry used the 2009
-calculation with 2008 metrics, instead of 2009 ones, leading to large differences if the 2009 metrics given in the Ministry's spreadsheet is used.  Difference are zero within rounding errors using 2008 data instead. In 2006, there is an unexplained 0.01\% discrepancy between my determination and the Ministry's.  The official spreadsheet file from the ministry, with additional sheets showing my calculations, are available from github project \url{https://github.com/loqueelvientoajuarez/afd}.\footnote{The original ministry file can
-be obtained from \url{http://dfi.mineduc.cl/usuarios/MECESUP/File/2018/instrumentos/AFD/AFD_2006_al_2018_MontosVariables5xc(1).xlsx} and my calculations from \url{https://github.com/loqueelvientoajuarez/afd/blob/master/src/tabla-afd.xlsx}}. 
-The detail of calculations for year 2018 is given in Appendix.~\ref{sec:2018}.
-For that year, my calculations match exactly the Ministery's to the peso.
+calculation with 2008 metrics, instead of 2009 ones, leading to large differences if the 2009 metrics given in the Ministry's spreadsheet is used.  Difference are zero within rounding errors using 2008 data instead. In 2006, there is an unexplained 0.01\% discrepancy between my determination and the Ministry's.  The official spreadsheet file from the ministry, with additional sheets showing my calculations, is available from github project \url{https://github.com/loqueelvientoajuarez/afd}.\footnote{The original ministry file can
+be obtained from \url{http://dfi.mineduc.cl/usuarios/MECESUP/File/2021/AFD/AFD_2006_al_2021_MontosVariables5xc.xlsx}.}. 
 
-\paragraph{Time-evolution} I have checked the recurrence formula \eqref{afd} using the total amount given for each year $F_n$.  The 95\% funding is well predicted from year to year, except again for 2010, where I had to substitute 2008 funding percentages to the expected 2009 ones. Because of rounding errors cumulating from year to year, the amounts I predict differ by up to 4,000 pesos (approx USD 10) with those of the Ministry.
+\paragraph{Time-evolution} I have checked the induction formula \eqref{afd} using the total amount given for each year $F_n$.  The 95\% funding is well predicted from year to year, except again for 2010, where I had to substitute 2008 funding percentages to the expected 2009 ones. Because of rounding errors cumulating from year to year, the amounts I predict differ by up to 5,000 pesos ($\approx 6$ USD as of November 2021) with those of the Ministry.
 
 \paragraph{Marginal earnings}  Marginal earnings have been determined by two methods.  The first one, using differential calculus in Sect.~\ref{sec:marginal}, and the second one, by doing the full calculation with \eqref{afd} using the new values of the coefficients.  I have checked that both method agree within a few significant digits as long as the variations remain small.
 
@@ -221,39 +231,48 @@ For that year, my calculations match exactly the Ministery's to the peso.
 \label{tab:sciencecost}
 \begin{table*}[t]
 \centering
-\caption{Additional earnings in 2020 Chilean pesos for thes marginal improvement of 2019 metrics: an additional full-time contract of a postgraduate professor, an additional research grant, and an additional Web of Science (ex-ISI) publication.  2020 funding is accurate to 1,000 pesos. The total funding assumed that the State funding continues growing by 2\% a year real terms.  A research grant typically lasts 3 years and will carry the same level of funding for each year it is active.  An additional tenure-track/tenured professor will bring as many times more funding as the years they stay hired.}
+\caption{Additional earnings in 2021 Chilean pesos for thes marginal improvement of 2020 metrics: an additional one-year full-time contract of a postgraduate professor, an additional research grant, and an additional Web of Science (ex-ISI) publication with no collaborators from other Traditional Universities.  Assumptions for the all years funding is: State contribution continues to grow by 2\% a year real terms, a yearly depreciation of 5\% in real terms to future earnings is applied.}
 \setlength\tabcolsep{5pt}
+\vskip 5pt
 \input tex/tab-incentives.tex
 \end{table*}
 
-If an additional paper is published by a researcher of University $i$ in year $n$, it will reflect in the 5\% funding of year $n + 1$. Let us call $\Delta F_{i,n+1}$ the additional earnings 
+If an additional paper has been published by a researcher of University $i$ in year $n - 1$, it will reflect in the 5\% funding of year $n$. Let us call $\Delta F_{i,n}$ the additional earnings 
 of the university in that year.  In the subsequent years, it will reflect via the 95\% 
 (first term of the right handside of \eqref{afd}) in this way:
 \begin{align}
-   \Delta F_{i,n+k} &=  \frac{19}{20} \Delta F_{n+k-1} F_{n+k}  / F_{n+k-1}, \notag\\
-\intertext{so, using \eqref{F},}
-   \Delta F_{i,n+k} &= \Delta F_{n+k-1}  \frac{ 19 (1 + q)} { 20}
+   \Delta F_{i,n+k} &=  \frac{19}{20} \Delta F_{n+k-1} 
+                                \frac{F_{n+k}}{F_{n+k-1}}, \notag\\
+                    &= \Delta F_{n+k-1}  \frac{ 19 (1 + q)} { 20}\notag,\\
+                    &= \Delta F_{n} \left(\frac{ 19(1+q)} {20} \right) ^{k}.
 \end{align}
+In order to obtain the present value  corresponding to these future earnings, we take a yearly depreciation of $d = 5$\% in real terms (i.e. $\approx 8\%$ in pesos).  
+\begin{equation}
+    \Delta F_{i,n+k}^\text{PV} = \Delta F_{n}    
+                \left(\frac{ 19(1+q)} {20(1+d)} \right) ^{k}
+\end{equation}
 
 The additional funding obtained by the university in all years is therefore
 \begin{align}
-    \Delta F_{i} &= \sum_{k=1}^{+\infty} \Delta F_{i,n+k} \notag \\
-                 &= \sum_{k=1}^{+\infty} \frac{19(1 + q)}{20} \,\Delta F_{i,n+1} \notag \\
-                 &= \frac{20} { 1 - 19q } \Delta F_{i,n+1}\\
-                 &\approx 32 \Delta F_{i,n+1}. \notag
+    \Delta F_{i}^\text{PV}
+         &= \sum_{k=0}^{+\infty} \Delta F_{i,n+k}, \notag \\
+         &= \sum_{k=0}^{+\infty} \left(
+                        \frac{19(1 + q)}{20(1 + d)}  \right)^k\Delta F_{i,n} \notag \\
+                 &= \frac{20(1+d)}{1 + 20d - 19q} \Delta F_{i,n}, \\
+                 &\approx 13 \Delta F_{i,n}. \notag
 \end{align}
 
-The determination of $\Delta F_{i,n+1}$ is straightforward.  The calculations
+The determination of $\Delta F_{i,n}$ is straightforward.  The calculations
 in \eqsref{x1}{afd} are done with the metrics provided by the Ministry (see Sect.~\ref{sec:metrics}) and for the same ones with an additional publication.  The difference in funding is $\Delta F_{i,n+1}$. 
 
-Table~\ref{tab:sciencecost} gives the 2019 funding a University would have received, had an additional 2019 paper been published, an additional one-year science staff (professor) been contracted, or an additional grant been obtained (postdoct staff or other project).  I have made the hypothesis that no other Traditional University has co-authored the paper, in which case the amount may vary. 
+Table~\ref{tab:sciencecost} gives the 2021 funding a University would have received, had an additional 2020 paper been published, an additional one-year science staff (professor) been contracted, or an additional grant been open (postdoct staff or other project).  I have made the hypothesis that no other Traditional University has co-authored the paper, in which case the amount may vary. 
 
-My figures are much larger than those derived by \citet{RAM12}.  The reasons are that they
+My figures differ from those derived by \citet{RAM12}.  The reasons are that they
 \begin{enumerate}
-\item only consider the first five years after the paper is published while the half-life of the 95\% dampening is 14 years, meaning that they underestimate the total revenue obtained with a paper by a factor of $\approx 4$
-\item include an additional dampening of 8\% per year that they do not justify and is not based on any kind of calculation by the Ministry, meaning that they underestimate the additional funding by a factor of $\approx 2.5$ to 4;\footnote{Quite the contrary, the constant increase of the total funding (consumer price index +2\%) calls for an amplification of 2\%}
-\item use 2010 data, meaning that the monetary incentive is larger than the 2018 one by a factor of $\approx 2$; and
-\item seem to use different values for the coefficients than those retroactively published in 2012. Their Fig.~4 doesn't match the corrected coefficients I derive for 2009, 2010, or 2011. Actually, both our data and Ministry's figures for years 2006 to 2017 show a systematic discrepancy between U. de Chile and P. U. Católica de Chile of the order of 25-35\%  in weighted sum of corrected coefficients and share of the 5\%, while their Figure gives about 10\%.
+\item only consider the first five years after the paper is published though their dampening law of $95\% / (1 + 8\%)$ still yields about 50\% of the inital sum at that point, meaning that they underestimate the total revenue obtained with a paper by a factor of $\approx 2$;
+\item do not take into account that the total funding increases by IPC + 2\% $\approx 5$\% per year, meaning that they further underestimate the present value of a paper by a factor of $\approx 1.5$;
+\item publish at a time of significantly larger incentives, by a factor of $\approx 2$ for well established universities; and
+\item seem to use different values for the coefficients than those published by the Ministry and actually used for the calculations. Their Fig.~4 doesn't match the corrected coefficients I derive for 2009, 2010, or 2011. For instance, both my data and the Ministry's official figures for years 2006 to 2012 show a systematic discrepancy between U. de Chile and P. U. Católica de Chile between 31 and 60\% in the weighted sum of corrected coefficients and share of the 5\%, while their Figure shows a discrepancy of only about 10\%.
 \end{enumerate}
 
 \subsection{Value of collaborations}
@@ -339,37 +358,43 @@ The last term requires some more calculation. Let's use \eqref{sigma}:
 The Chilean consumer price index narrowly followed by the unidad de fomento (UF), a fiscal currency unit with daily conversions published by the inland revenue service known as Servicio de Impuestos Internos (SII).  The GDP growth per capita has been taken from the World Bank online database and the growth of the mean wage from the Chilean institute for Statistics (Instituto Nacional de Estadística).  They are summed up in Table~\ref{tab:macro}.
 
 
-\subsection{Direct state funding in 2018}
-\label{sec:2018}
-
-Table~\ref{tab:calcdetail} show the metrics used by the
-Ministry in 2018 and the calculation details for $x_k$ and $y_k$. 
-
-\begin{sidewaystable*}[p]
-\centering
-\caption{
-Metrics used for the calculations of the Direct State funding (aporte fiscal 
-directo) of traditional Chilean Universities in 2018: \npup{}, the number of
-undergrad students; \nmaj{}, the number of majors; \nprof{}, the number of
-(equivalent) full-time professors and researchers (``académico''); \ngrad{},
-the number of (equivalent) full-time staff with post-graduate title; \ngrant{},
-the number of research grants; $\nisi$, the number of ISI publications; and
-$\nscielo$, the number of non-ISI publications indexed by the Scientific
-Electronic Library Online Chile. Calculation details for the 5\% direct State 
-funding (aporte fiscal directo) include intermediate variables $x_i$ and $y_i$ for each metric, the percent share of the 5\% and the total amount.
-}
-\label{tab:calcdetail}
-\setlength{\tabcolsep}{5pt}
-\def\arraystretch{1.5}
-\footnotesize
-\input tex/tab-calcdetail.tex
-\end{sidewaystable*}
+%\subsection{Direct state funding in 2018}
+%\label{sec:2018}
+%
+%Table~\ref{tab:calcdetail} show the metrics used by the
+%Ministry in 2018 and the calculation details for $x_k$ and $y_k$. 
+%\begin{sidewaystable*}[p]
+%\centering
+%\caption{
+%Metrics used for the calculations of the Direct State funding (aporte fiscal 
+%directo) of traditional Chilean Universities in 2018: \npup{}, the number of
+%undergrad students; \nmaj{}, the number of majors; \nprof{}, the number of
+%(equivalent) full-time professors and researchers (``académico''); \ngrad{},
+%the number of (equivalent) full-time staff with post-graduate title; \ngrant{},
+%the number of research grants; $\nisi$, the number of ISI publications; and
+%$\nscielo$, the number of non-ISI publications indexed by the Scientific
+%Electronic Library Online Chile. Calculation details for the 5\% direct State 
+%funding (aporte fiscal directo) include intermediate variables $x_i$ and $y_i$ for each metric, the percent share of the 5\% and the total amount.
+%}
+%\label{tab:calcdetail}
+%\setlength{\tabcolsep}{5pt}
+%\def\arraystretch{1.5}
+%\footnotesize
+%\input tex/tab-calcdetail.tex
+%\end{sidewaystable*}
 
 \begin{figure*}[p]
 \centering
-\includegraphics[width=.9\linewidth]{pdf/afd-coefficients-2018.jpg}
-\caption{Graphical representation of the contributions of each AFD coefficient ($c_k y_k$) to each University's score.}
+\includegraphics{pdf/afd-coefficients.pdf}
+\caption{Contributions of each metric to the AFD funding of traditional Chilean universities in 2021. \textit{Top panel:} contributions of 2020 metrics to the 5\%. \textit{Bottom panel:} contributions of the recent metrics and historic pre-2005 (or pre-creation for the most recent universities) ones to the total funding. \textit{Left axis:} thousand million Chilean pesos, of the order of million US dollars. \textit{Right axis:} university scores $c_k y_k$ and its total $y = \sum c_k y_k$.}
 \end{figure*}
+
+\begin{figure*}[p]
+\centering
+\includegraphics{pdf/afd-specialisation.pdf}
+\caption{Classification of traditional universities according to their teaching v. science specialisation and their established v. surging status. The two newly created institutions have not been included. \textit{Circles:} area is proportional to the total AFD funding received in 2021. \textit{Horizontal axis:} ratio of funding originating from the 2005--2020 science metrics (number of grants and papers) to the one from all 2005--2020 metrics. The vertical line indicates the median value. \textit{Vertical axis:} ratio of funding originated from 2005--2020 metrics to total funding.  A value of 0 means all funding arises from pre-2006 funding and 1 that the university receives all of in virtue of its recent metrics. The horizontal is the ratio expected in steady state (0.56), since pre-2006 funding is expected to have decayed to $0.95^{2021-2005} = 0.44$. (It is by definition very close to the weighted mean of the data.)}
+\end{figure*}
+
 
 \section*{Bibliography}
 \bibliographystyle{plainnat}
