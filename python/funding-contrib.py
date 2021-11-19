@@ -106,11 +106,14 @@ def cumulate_afd5(tabs):
 def plot_afd5(tab):
   
     tab = tab.copy()
-    tab.sort(['AFD95%'], reverse=True)
+    tab.add_column(tab['AFD95%'] + tab['AFD5%'], name='AFD')
+    tab.sort(['AFD'], reverse=True)
  
-    colors = [ (1.0, 1.0, 1.0), (0, 0, 0), (0.4, 0.1, 0.1), 
-              (0.2, 0.8, 0.2), (0.4, 0.4, 1.0),
-              (0.8, 0.8, 0.8),]
+    colors = [(1.0, 1.0, 1.0), (0, 0, 0), 
+                (0.8, 0.8, 0.8),
+                (0.6, 0., 0.), 
+                (0.1, 1, 0.1), (0.4, 0.4, 1.0),
+              ]
 
     c = [0.01, 0.15, 0.24, 0.25, 0.35]
     
@@ -122,8 +125,12 @@ def plot_afd5(tab):
     ax = fig.add_subplot(211)
 
     univ = tab['University']
-    label = ['pre-2005 metrics/inital funding', 'students per major', 'students per prof', 
-        'graduates per prof', 'grants per prof', 'papers per prof']
+    label = ['pre-2006 funding', 
+        'students per discipline (2020)', 
+        'students per prof. (2020)', 
+        'postgrad. prof. per prof. (2020)', 
+        'grants per prof. (2020)', 
+        'papers per prof. (2020)']
     f = [tab[f'f{i + 1}'] / 1e6 for i in range(5)]
 
     bottom = 0
@@ -131,7 +138,7 @@ def plot_afd5(tab):
         ax.bar(univ, fi, bottom=bottom, label=labeli, 
             align='edge', width=-0.8, color=colori, edgecolor='black')
         bottom += fi
-    ax.legend(title=f"5\% AFD in {tab.meta['year']}") 
+    afdtable.inverse_legend(ax, title=f"5\% AFD in {tab.meta['year']}") 
   
     ax.set_xticklabels([]) 
     ax.tick_params(axis='x', bottom=False) 
@@ -144,21 +151,35 @@ def plot_afd5(tab):
     factor = ysum / fsum  # lucas -> billions
     ax2.set_ylim(0, ax.get_ylim()[1] * ysum / fsum)
 
-    ax2.set_ylabel('metrics-based score $y$')
+    ax2.set_ylabel('metrics-based scores $y = \sum_k c_k y_k$')
     
     # Total 
+    label = ['historic (pre-2005 metrics)', 
+        'students per discipline (2005-2020)', 
+        'students per prof. (2005-2020)', 
+        'postgrad. prof per prof. (2005-2020)', 
+        'grants per prof. (2005-2020)', 
+        'papers per prof. (2005-2020)']
 
     ax = fig.add_subplot(212)
 
     y = [tab[f'F{k}'] / 1e6 for k in ['h', 1, 2, 3, 4, 5]]
+    new = (univ == "U. de Aysén") | (univ == "U. de O'Higgins")
+    ynew = np.sum(y, axis=0) * new
 
     bottom = 0
+
     for yi, labeli, colori in zip(y, label, colors):
+        yi[new] = 0.0
         ax.bar(univ, yi, bottom=bottom, label=labeli, 
             align='edge', width=-0.8, color=colori, edgecolor='black')
         bottom += yi
-    ax.legend(title=f"Total AFD in {tab.meta['year']}") 
-  
+ 
+    ax.bar(univ, ynew, align='edge', width=-0.8, color='white', 
+            edgecolor='black', hatch='////')
+    
+    afdtable.inverse_legend(ax, title=f"Total AFD in {tab.meta['year']}") 
+ 
     for tick in ax.get_xticklabels():
         tick.set_rotation(38)
         tick.set_horizontalalignment('right')
@@ -166,13 +187,13 @@ def plot_afd5(tab):
     
     ax.set_ylabel('funding [$10^9$ CLP]')
 
-    fig.show()
     fig.tight_layout()
     fig.subplots_adjust(hspace=0.01)
+    
+    fig.show()
     
     fig.savefig('../pdf/afd-coefficients.pdf')
 
 tabs = afdtable.read_all_years()
-scatter(tabs)
+# scatter(tabs)
 plot_afd5(tabs[-1])
-

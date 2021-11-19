@@ -17,6 +17,11 @@ pl.rcParams['font.size'] = 10
 
 METRIC = {'U/M': 'x1', 'U/S': 'x2', 'Sp/S': 'x3', 'G/S': 'x4', 'P/S': 'x5'}
 
+def inverse_legend(ax, title=None, loc=None):
+
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1], labels[::-1], title=title, loc=loc)
+    
 def read_all_years():
 
     tabs = [read(year, fill_missing=True, verbose=True) 
@@ -184,7 +189,7 @@ def change_metrics(tab0, univ, variable, *, increment=1, unit='number'):
 
                 tab[univ][variable] += increment
 
-    compute(tab)
+    compute_funding(tab)
 
     return tab
 
